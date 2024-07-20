@@ -146,3 +146,65 @@ class User:
         User.experience_list[index-1] = years
 
 
+
+     #These methods to get/add/remove companies from user profile
+    def get_companies(self)->set:
+        '''
+        This is a method at instance level , it takes no arguments
+        it simply print the companies that the user works at
+        '''   
+        print(f"The user works at: {self.__companies}")
+
+
+    def add_companies(self, comp:str):
+       '''
+       This is a method at instance level, it takes one string argument
+       as the new company and adds it to the set of companies
+       that the user works at
+       '''
+       if comp.lower() not in self.__companies:
+           self.__companies.add(comp.lower())
+
+    def remove_companies(self, comp:str):
+        '''
+        This is a method at instance level, it takes one string argument
+       as the  company to be removed from  the set of companies
+       that the user works at       
+        '''
+        if comp.lower() in self.__companies:
+            self.__companies.remove(comp.lower())
+
+
+
+    #These methods are to get/add/remove programming languages from the user profile
+    def get_prog_lang(self)->set:
+        '''
+        This method is at instance level, it takes no arguments
+        it simply print the programming languages that the user knows
+        '''               
+        print(f"The programming languages that the user knows are: {self.__prog_lang}")
+
+
+    def add_prog_lang(self, pl:str):
+        '''
+        This method is at instance level, it takes one string argument
+        as the new programming language to add to the set of 
+        programming languages of the user      
+        '''    
+        if pl.lower() not in self.__prog_lang:
+            self.__prog_lang.add(pl.lower())
+
+
+
+    def remove_prog_lang(self, pl:str):
+        '''
+        This method is at instance level, it takes one string argument
+        as the  programming language to be removed from the set of 
+        programming languages of the user        
+        ''' 
+
+        if pl.lower() in self.__prog_lang:
+            self.__prog_lang.remove(pl.lower())
+    
+
+
