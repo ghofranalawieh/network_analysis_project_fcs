@@ -204,7 +204,54 @@ class User:
         ''' 
 
         if pl.lower() in self.__prog_lang:
-            self.__prog_lang.remove(pl.lower())
+            self.__prog_lang.remove(pl.lower()) #These are get/set functions for ready to help part in the user profile
+
+            
+    def check_if_ready(self)->bool:
+        '''
+        This method is at instance level, it takes no arguments
+        and simply print a phrase telling if the user is ready to 
+        help other coder or not       
+        '''               
+        if self.__ready==True:
+            print("ready to help!")
+        else:
+            print("Not ready to help!")    
+    
+    def set_ready(self, ready:bool, index:int):
+        '''
+        This method is at instance level, it takes two arguments
+        one is the new boolean value for the status, other is an integer
+        as the index of the user in the list of ready to update it       
+        '''
+        self.__ready = ready
+        User.ready_to_help[index-1]=ready #we use index-1 not index because the list starts from 0
+
+
+    #These are get/set functions for in need for help part in the user profile
+    def check_if_needy(self)->bool:
+        '''
+        This method is at instance level, it takes no arguments
+        and simply print a phrase telling if the user is in need for
+        other coders' help  or not  
+        '''    
+        if self.__needy ==True:
+            print("I need your help!")
+        else:
+            print("Everything is OK!")    
+    
+
+    def set_needy(self, needy:bool, index :int):
+        '''
+        This method is at instance level, it takes two arguments
+        one is the new boolean value for the status, other is an integer
+        as the index of the user in the list of needy to update it 
+        '''
+        self.__needy = needy
+        User.in_need_for_help[index-1]=needy
+
+
+
     
 
 
