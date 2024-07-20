@@ -76,3 +76,73 @@ class User:
        User.age_list.append(self.__age)
        User.experience_list.append(self.__experience)
 
+
+    #first getter/setter for user_name
+    def get_user_name(self)->str:
+        '''
+        This method is instance level
+        it takes no arguments, and simply print the name of the user                 
+        '''   
+        print(f"The name of this user is {self.__user_name}")
+
+
+    def set_user_name(self, name:str):
+        '''
+        This method is at instance level 
+        it takes one string input a the new name and update the user_name to it     
+        '''    
+        self.__user_name  = name.lower()
+    
+    
+    #These are methods to get and set the age
+    def get_age(self)->int:
+        '''
+        This method is at instance level, it takes no 
+        arguments and simply print the age of the user
+        '''  
+        print(f"This user is : {self.__age} years old")
+
+    def set_age(self, new_age:int, index:int):
+        '''
+        This method is at instance level, it takes two arguments, 
+        one is integer -the new age- other is the index that
+        represents the number of the user
+        in the age list to update its value
+        '''
+        if new_age<self.__age:
+            return -1
+        self.__age= new_age
+        User.age_list[index-1] = new_age
+
+
+    #This is a method to get  the gender of the user 
+    
+
+    def get_gender(self)->str:
+        '''
+        This method is at instance level, it takes no arguments
+        but simply print the user gender
+        '''   
+        print(f"The gender of the user is : {self.__gender}")
+
+
+    #These are methods to set/get experience of the user
+    def get_experience(self)->int:
+        '''
+        This method is at instance level, it takes no arguments
+        and simply print the experience years of the user
+        '''
+        print(f"This user has : {self.__experience} years of experience")
+
+
+
+    def set_experience(self, years:int, index:int):
+        '''
+        This method is at instance level it takes two integer arguments, 
+        one is the new years of experience, other is the number of the user that represent
+        its inddex in the experience list to update it
+        '''   
+        self.__experience = years
+        User.experience_list[index-1] = years
+
+
