@@ -357,7 +357,7 @@ class Graph:
         self.number_of_connections =0
 
 
-        
+
 
     #This is a function to add new users to the graph    
     def add_users(self,user:User)->None:
@@ -378,6 +378,46 @@ class Graph:
             #increment the number of nodes in the graph by 1
             self.__number_of_nodes += 1
     
+
+
+
+     #This is a function to remove a user from the graph
+    def remove_user(self, user:User)->None:
+        '''
+        This is a methad at the level of instance, it takes user of class User as an argument
+        and delete its data from the graph        
+        '''
+        
+        #first check if this user exists in the users list of the graph
+        if user.user_number in self.__nodes_list:
+
+            #if exists remove it from the list of users
+            self.__nodes_list.remove(user.user_number)
+
+            #and delete its key, value pair from the adjacency list dictionary
+            del self.__requests_list[user.user_number]
+
+            #decrement the number of nodes of this graph by 1
+            self.__number_of_nodes -= 1
+            
+
+            #remove this node from other lists of the other nodes in the adjacency list dictionary if exists
+            for  v in self.__requests_list.values():
+                if user.user_number in v:
+                    v.remove(user.user_number)
+
+            #we also need to remove all the connections with it from the connections matrix
+            # we set the number of deleting times to 0 initially to decrement it from the total number of connections in the graph        
+            number_of_delete =0
+            connections_to_remove = []        
+            for a, b in self.__connections_components:
+                if a==user.user_number or b==user.user_number:
+                   connections_to_remove.append((a,b))
+            
+            for connection in connections_to_remove:
+                self.__connections_components.remove(connection)
+                number_of_delete += 1
+            self.number_of_connections -= number_of_delete        
 
         
 
