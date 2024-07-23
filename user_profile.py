@@ -802,6 +802,7 @@ class Graph:
         return sorting_by_pl  
     
 
+
     #This is a function to check the users who have the given name
     def check_user_name(self, name:str)->list:
         '''
@@ -813,6 +814,25 @@ class Graph:
         for key in sort_by_name.keys():
             if key.lower() == name.lower():
                 return sort_by_name[key]
+
+
+
+    #This is a function to check the users who have the given age     
+    def check_age(self, age:int)->list:
+        '''
+        This is a method at the level of instance, that takes 1 integer 
+        argument and return a ist of users' numbers who have the same age
+        '''
+
+        d =self.sort_by_age()
+        for key in d.keys():
+            if key == age:
+                return d[key]        
+            
+
+    
+
+
 
 
 
