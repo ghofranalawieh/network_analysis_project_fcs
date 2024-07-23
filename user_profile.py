@@ -766,8 +766,8 @@ class Graph:
         return companies_sort 
 
 
-    
-     
+
+
     #This is a funcrtion to sort the users by their genders
     def sort_by_gender(self)->dict:
         '''
@@ -782,6 +782,24 @@ class Graph:
         for key, value in gender_map.items():
             sort_by_gender[value].append(key)
         return sort_by_gender 
+    
+
+
+    
+    #This is a funcrtion to sort the users by their programming languages
+    def sort_by_prog_lang(self)->dict:
+        '''
+        This is a method at the level of instance that takes no arguments
+        and returns their programming languages as keys and users in  a list
+        '''
+        prog_lang_map ={}
+        for u in self.__nodes_list:
+            prog_lang_map[u]=User.USER_DATA[u]["programming langs"]
+        sorting_by_pl = {}
+        for key, value in prog_lang_map.items():
+            for v in value:
+                sorting_by_pl.setdefault(v, []).append(key)
+        return sorting_by_pl  
 
 
 
