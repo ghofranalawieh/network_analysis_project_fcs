@@ -554,6 +554,24 @@ class Graph:
     
 
 
+    #This is  a function to get the percentage of people who are in need for help
+    def needy_percentage(self)->float:
+        '''
+        This method is at class level, it takes no arguments,
+        it simply prints out the percentage of coders who are in need for 
+        other coders help          
+        '''
+        summ = 0
+        for u in self.__nodes_list:
+            if User.USER_DATA[u]["In need for help"]==True:
+                summ+= 1
+
+
+        percentage = ((summ/self.__number_of_nodes)*100)
+        rounded = round(percentage, 2)
+        return rounded
+
+
 
 
 
