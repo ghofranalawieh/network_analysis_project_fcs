@@ -827,7 +827,21 @@ class Graph:
         d =self.sort_by_age()
         for key in d.keys():
             if key == age:
-                return d[key]        
+                return d[key]    
+
+
+
+    #This is a function to check the users who have the given experience
+    def check_experience(self, exp:int)->list:
+        '''
+        This is a method at the level of instance, that takes 1 integer 
+        argument and return a ist of users' numbers who have the same experience
+        '''
+
+        d = self.sort_by_experience()
+        for key in d.keys():
+            if key == exp:
+                return d[key]            
             
 
     
