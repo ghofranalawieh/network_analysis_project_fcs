@@ -537,6 +537,22 @@ class Graph:
         return degrees  
     
 
+    #This is a function to get the percentage of ppl who are ready to help
+    def helpful_percentage(self)->float:
+        '''
+        This method is at class level, it takes no arguments,
+        it simply prints out the percentage of coders who are welling to help     
+        '''  
+        summ = 0
+        for u in self.__nodes_list:
+            if User.USER_DATA[u]['Ready to help']==True:
+                summ += 1
+                
+        percentage = ((summ/self.__number_of_nodes)*100)
+        rounded = round(percentage, 2)
+        return rounded   
+    
+
 
 
 
