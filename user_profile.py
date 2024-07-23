@@ -570,6 +570,26 @@ class Graph:
         percentage = ((summ/self.__number_of_nodes)*100)
         rounded = round(percentage, 2)
         return rounded
+    
+
+
+    #This is a function to get the percentage of users sorted by gender
+    def gender_percentage(self)->float:
+        '''
+        This is a function of the class that takes no arguments and it returns the 
+        percentsge of users' genders in the program        
+        '''         
+        sumf = 0
+        for  u in self.__nodes_list:
+            if User.USER_DATA[u]["gender"]=='female':
+                sumf += 1
+
+        percentage_females = (sumf / self.__number_of_nodes* 100)
+        roundedf = round(percentage_females, 2)
+        percentage_males = 100 - percentage_females
+        roundedm = round(percentage_males, 2)
+
+        return roundedf, roundedm
 
 
 
