@@ -701,6 +701,22 @@ class Graph:
         for key, value in request_map.items():
             following_nbr[value].append(key)      
         return following_nbr
+    
+
+
+    #This is a funcrtion to sort the users by their user names
+    def sort_by_user_name(self)->dict:
+        '''
+        This is a method at the level of instance that takes no arguments
+        and returns their names  as keys and users in  a list
+        '''
+        names_map = {}
+        for u in self.__nodes_list:
+            names_map[u] = User.USER_DATA[u]["user name"]
+        sort_by_name = defaultdict(list)
+        for key, value in names_map.items():
+            sort_by_name[value].append(key)
+        return sort_by_name
 
 
 
