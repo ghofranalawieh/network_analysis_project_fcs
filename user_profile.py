@@ -154,7 +154,7 @@ class User:
         This method is instance level
         it takes no arguments, and simply print the name of the user                 
         '''   
-        print(f"The name of this user is {self.__user_name}")
+        return self.__user_name
 
 
     def set_user_name(self, name:str):
@@ -162,7 +162,9 @@ class User:
         This method is at instance level 
         it takes one string input a the new name and update the user_name to it     
         '''    
-        self.__user_name  = name.lower()
+        User.USER_DATA[self.user_number]["user name"]= name.lower()
+
+
     
     
     #These are methods to get and set the age
@@ -171,30 +173,28 @@ class User:
         This method is at instance level, it takes no 
         arguments and simply print the age of the user
         '''  
-        print(f"This user is : {self.__age} years old")
+        return self.__age
 
-    def set_age(self, new_age:int, index:int):
+
+    def set_age(self, new_age:int):
         '''
-        This method is at instance level, it takes two arguments, 
-        one is integer -the new age- other is the index that
-        represents the number of the user
-        in the age list to update its value
+        This method is at instance level, it takes one argument, 
+        as the new age to reset it in the profile
         '''
-        if new_age<self.__age:
-            return -1
-        self.__age= new_age
-        User.age_list[index-1] = new_age
+        User.USER_DATA[self.user_number]["age"]= new_age
+
+        
 
 
     #This is a method to get  the gender of the user 
-    
-
     def get_gender(self)->str:
         '''
         This method is at instance level, it takes no arguments
         but simply print the user gender
         '''   
-        print(f"The gender of the user is : {self.__gender}")
+        return  self.__gender
+
+
 
 
     #These are methods to set/get experience of the user
@@ -203,18 +203,17 @@ class User:
         This method is at instance level, it takes no arguments
         and simply print the experience years of the user
         '''
-        print(f"This user has : {self.__experience} years of experience")
+        return self.__experience
 
 
 
-    def set_experience(self, years:int, index:int):
+    def set_experience(self, years:int)->None:
         '''
-        This method is at instance level it takes two integer arguments, 
-        one is the new years of experience, other is the number of the user that represent
-        its inddex in the experience list to update it
+        This method is at instance level it takes one integer argument, 
+        as the new experience of the user
         '''   
-        self.__experience = years
-        User.experience_list[index-1] = years
+        User.USER_DATA[self.user_number]["experience"] = years
+       
 
 
 
@@ -224,10 +223,10 @@ class User:
         This is a method at instance level , it takes no arguments
         it simply print the companies that the user works at
         '''   
-        print(f"The user works at: {self.__companies}")
+        return self.__companies
 
 
-    def add_companies(self, comp:str):
+    def add_companies(self, comp:str)->None:
        '''
        This is a method at instance level, it takes one string argument
        as the new company and adds it to the set of companies
@@ -236,7 +235,7 @@ class User:
        if comp.lower() not in self.__companies:
            self.__companies.add(comp.lower())
 
-    def remove_companies(self, comp:str):
+    def remove_companies(self, comp:str)->None:
         '''
         This is a method at instance level, it takes one string argument
        as the  company to be removed from  the set of companies
@@ -247,16 +246,17 @@ class User:
 
 
 
+
+
     #These methods are to get/add/remove programming languages from the user profile
     def get_prog_lang(self)->set:
         '''
         This method is at instance level, it takes no arguments
         it simply print the programming languages that the user knows
         '''               
-        print(f"The programming languages that the user knows are: {self.__prog_lang}")
+        return self.__prog_lang
 
-
-    def add_prog_lang(self, pl:str):
+    def add_prog_lang(self, pl:str)->None:
         '''
         This method is at instance level, it takes one string argument
         as the new programming language to add to the set of 
@@ -265,9 +265,7 @@ class User:
         if pl.lower() not in self.__prog_lang:
             self.__prog_lang.add(pl.lower())
 
-
-
-    def remove_prog_lang(self, pl:str):
+    def remove_prog_lang(self, pl:str)->None:
         '''
         This method is at instance level, it takes one string argument
         as the  programming language to be removed from the set of 
@@ -275,28 +273,29 @@ class User:
         ''' 
 
         if pl.lower() in self.__prog_lang:
-            self.__prog_lang.remove(pl.lower()) #These are get/set functions for ready to help part in the user profile
+            self.__prog_lang.remove(pl.lower())
 
 
+
+
+    #These are get/set functions for ready to help part in the user profile
     def check_if_ready(self)->bool:
         '''
         This method is at instance level, it takes no arguments
         and simply print a phrase telling if the user is ready to 
         help other coder or not       
         '''               
-        if self.__ready==True:
-            print("ready to help!")
-        else:
-            print("Not ready to help!")    
+        return self.__ready
+          
     
-    def set_ready(self, ready:bool, index:int):
+    def set_ready(self, ready:bool)->None:
         '''
-        This method is at instance level, it takes two arguments
-        one is the new boolean value for the status, other is an integer
-        as the index of the user in the list of ready to update it       
+        This method is at instance level, it takes one argument
+        that  is the new boolean value for the status   
         '''
-        self.__ready = ready
-        User.ready_to_help[index-1]=ready #we use index-1 not index because the list starts from 0
+        User.USER_DATA[self.user_number]["Ready to help"] = ready
+        
+
 
 
     #These are get/set functions for in need for help part in the user profile
@@ -306,20 +305,16 @@ class User:
         and simply print a phrase telling if the user is in need for
         other coders' help  or not  
         '''    
-        if self.__needy ==True:
-            print("I need your help!")
-        else:
-            print("Everything is OK!")    
+        return self.__needy
+        
     
 
-    def set_needy(self, needy:bool, index :int):
+    def set_needy(self, needy:bool)->None:
         '''
-        This method is at instance level, it takes two arguments
-        one is the new boolean value for the status, other is an integer
-        as the index of the user in the list of needy to update it 
+        This method is at instance level, it takes one argument
+        that is the new boolean value for the status 
         '''
-        self.__needy = needy
-        User.in_need_for_help[index-1]=needy
+        User.USER_DATA[self.user_number]["In need for help"] = needy
 
 
        #This is a function to get the percentage of ppl who are ready to help
