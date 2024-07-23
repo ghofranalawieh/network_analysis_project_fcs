@@ -491,6 +491,38 @@ class Graph:
         the edges components in the current graph
         '''
         return self.__connections_components  
+    
+
+
+    #This is a function to get the outdegrees of all nodes in the graph in a dictionary    
+    def get_out_degrees(self)->dict:
+        '''
+        This is a function at the level of instance that takes no arguments and it returns
+        a dictionary
+        '''
+        out_degrees = []
+        
+        #we iterate through keys, and values of the adj-list dictionary
+        for u, v in self.__requests_list.items():
+            out_degrees.append((u, {f"The outdegree":len(v)}))
+        return out_degrees 
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     
     
