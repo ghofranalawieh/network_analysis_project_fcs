@@ -869,7 +869,21 @@ class Graph:
         d = self.sort_by_need()
         for key in d.keys():
             if key == needy:
-                return d[key]                     
+                return d[key]  
+
+
+
+
+    #This is a function to check the users who work at the given company
+    def check_company(self, comp:str)->list:
+        '''
+        This is a method at the level of instance, that takes 1 boolean 
+        argument and return a ist of users' numbers who work at the same company
+        '''
+        d = self.sort_by_companies()
+        for key in d.keys():
+            if key.lower()==comp.lower():
+                return d[key]                            
             
 
     
