@@ -685,6 +685,22 @@ class Graph:
         for key , value in requested_by_map.items():
             followers_nbr_store[value].append(key)
         return followers_nbr_store  
+    
+
+
+    #this is a funcrtion to sort the users by their followings
+    def sort_by_followings(self)->dict:
+        '''
+        This is a method at the level of instance that takes no arguments
+        and returns the number of followings  as keys and users in  a list
+        '''
+        request_map ={}
+        for u in self.__nodes_list:
+            request_map[u]=User.USER_DATA[u]["number of requests"]   
+        following_nbr = defaultdict(list)
+        for key, value in request_map.items():
+            following_nbr[value].append(key)      
+        return following_nbr
 
 
 
