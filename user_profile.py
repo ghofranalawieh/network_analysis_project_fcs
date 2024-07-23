@@ -417,7 +417,33 @@ class Graph:
             for connection in connections_to_remove:
                 self.__connections_components.remove(connection)
                 number_of_delete += 1
-            self.number_of_connections -= number_of_delete        
+            self.number_of_connections -= number_of_delete
+            
+
+
+
+
+    #This is a function to add an edge between 2 nodes in the graph  
+    def add_connection(self, userF:User, userS:User)->None:
+        '''
+        This is a method at the instance level, that takes 2 users of class User as arguuents
+        and build a directed edge from userF to userS
+        '''
+
+        #first we have to check if there are any connection from userF to userS
+        if userS.user_number not in self.__requests_list[userF.user_number]:
+
+            #we add userS to the value list in the adj-list dictionary
+            self.__requests_list[userF.user_number].append(userS.user_number)
+
+            #we append a tuple of the new connected pairs to the connections matrix
+            self.__connections_components.append((userF.user_number, userS.user_number))
+
+            #increment the number of connections by 1
+            self.number_of_connections += 1
+
+            #apply the request method from class User to perform all the needed updation to the user profile and data
+            userF.request(userS.user_number)        
 
         
 
