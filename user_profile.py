@@ -217,7 +217,7 @@ class User:
 
 
 
-     #These methods to get/add/remove companies from user profile
+    #These methods to get/add/remove companies from user profile
     def get_companies(self)->set:
         '''
         This is a method at instance level , it takes no arguments
@@ -317,81 +317,13 @@ class User:
         User.USER_DATA[self.user_number]["In need for help"] = needy
 
 
-       #This is a function to get the percentage of ppl who are ready to help
-    def helpful_percentage()->float:
-        '''
-        This method is at class level, it takes no arguments,
-        it simply prints out the percentage of coders who are welling to help     
-        '''    
-        summ = 0
-        for i in User.ready_to_help:
-            if i== True:
-                summ += 1
-        percentage = (summ/len(User.ready_to_help)*100)
-        rounded = round(percentage, 2)
-        print(f"The percentage of coders who are ready to help: {rounded} %")
-    
+    #This is a method to get the entire data of the user
+    def get_data(self):
+        for user, d in  self.__data.items():
+            print(user, ':' , d) 
+        
 
     
-
-    #This is  a function to get the percentage of people who are in need for help
-    def needy_percentage()->float:
-        '''
-        This method is at class level, it takes no arguments,
-        it simply prints out the percentage of coders who are in need for 
-        other coders help          
-        '''
-        summ = 0
-        for i in User.in_need_for_help:
-            if i==True:
-                summ += 1
-        percentage = (summ/len(User.in_need_for_help)*100)
-        rounded = round(percentage, 2)
-        print(f"The percentage of needy coders is : {rounded} %")
-    
-
-    
-
-    #This is a function to get the percentage of users sorted by gender
-    def gender_percentage()->float:
-        '''
-        This is a function of the class that takes no arguments and it returns the 
-        percentsge of users' genders in the program        
-        '''         
-        sumf = 0
-        for i in User.gender_list:
-            if i == 'female':
-                sumf += 1
-        percentage_females = (sumf / len(User.gender_list) * 100)
-        roundedf = round(percentage_females, 2)
-        percentage_males = 100 - percentage_females
-        roundedm = round(percentage_males, 2)
-
-        print(f"The percentage of female users is : {roundedf} %\nThe percentage of male users is : {roundedm} %")
-    
-
-    
-    #This is a function to get the average age of the users
-    def average_age()->float:
-        '''
-        This methaod is at class level ,it takes no arguments,
-        it simply print out the average age of users      
-        '''
-        average = sum(User.age_list)/len(User.age_list)
-        rounded = round(average, 2)
-        print(f"The average age of users is : {rounded}")
-    
-
-
-    #This is a function to get the average experience of the users
-    def average_experience()->float:
-        '''
-        This methaod is at class level ,it takes no arguments,
-        it simply print out the average experience of users        
-        '''
-        average = sum(User.experience_list)/len(User.experience_list)
-        rounded = round(average, 2)
-        print(f"The average experience of users is : {rounded}")
     
 
 
