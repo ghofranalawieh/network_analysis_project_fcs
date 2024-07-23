@@ -884,7 +884,20 @@ class Graph:
         for key in d.keys():
             if key.lower()==comp.lower():
                 return d[key]                            
-            
+
+
+
+    #This is a function to check the users who have the given programming language
+    def check_prog_lang(self, pl:str)->list:
+        '''
+        This is a method at the level of instance, that takes 1 string
+        argument and return a ist of users' numbers who have the same programming language
+        '''
+
+        d = self.sort_by_prog_lang()
+        for key in d.keys():
+            if key.lower() == pl.lower():
+                return d[key]          
 
     
 
