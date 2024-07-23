@@ -631,6 +631,28 @@ class Graph:
         '''
         d = (self.number_of_connections) /((self.__number_of_nodes) *(self.__number_of_nodes-1))
         return d
+    
+
+
+    #This is a function to sort the users by their age
+    def sort_by_age(self)->dict:
+        '''
+        This is a method at the level of instance that takes no arguments
+        and returns the ages as keys and users in  a list
+        '''
+
+        #first store teh user number as a key and the age as a value
+        age_map = {}
+        for u in self.__nodes_list:
+            age_map[u]=User.USER_DATA[u]["age"]
+
+        #we use defaultdict inorder  to ensure that certain keys always have a default value -list-, even if they haven't been explicitly set yet.   
+        age_store = defaultdict(list)
+
+        #set values as keys and append keys of same values to the same list
+        for key, value in  age_map.items():
+            age_store[value].append(key)
+        return age_store 
 
 
 
