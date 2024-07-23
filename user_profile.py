@@ -747,6 +747,23 @@ class Graph:
         for key , value in need_map.items():
             needy_sort[value].append(key)
         return needy_sort  
+    
+
+    #This is a funcrtion to sort the users by the companies they work for
+    def sort_by_companies(self)->dict:
+        '''
+        This is a method at the level of instance that takes no arguments
+        and returns the companies that they work at as keys and users in  a list
+        '''
+        companies_map ={}
+        for u in self.__nodes_list:
+            companies_map[u]=User.USER_DATA[u]["companies"]
+        companies_sort = {}
+        for key, value in companies_map.items():
+            for v in value:
+                #here we use setdefault method to set default values to the keys even before defining them
+                companies_sort.setdefault(v, []).append(key)
+        return companies_sort  
 
 
 
