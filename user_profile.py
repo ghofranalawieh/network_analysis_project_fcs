@@ -42,6 +42,10 @@ class User:
        self.__prog_lang = {pl.lower() for pl in prog_lang}
        self.__ready = ready
        self.__needy = needy
+
+       #These dictionaries that we want to use in order to manage user requests and followers
+       self.__requested_by = {}
+       self.__requests = {}
    
 
 
