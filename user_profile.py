@@ -763,7 +763,27 @@ class Graph:
             for v in value:
                 #here we use setdefault method to set default values to the keys even before defining them
                 companies_sort.setdefault(v, []).append(key)
-        return companies_sort  
+        return companies_sort 
+
+
+    
+     
+    #This is a funcrtion to sort the users by their genders
+    def sort_by_gender(self)->dict:
+        '''
+        This is a method at the level of instance that takes no arguments
+        and returns their gender as keys and users in  a list
+        '''
+
+        gender_map = {}
+        for u in self.__nodes_list:
+            gender_map[u]=User.USER_DATA[u]["gender"]
+        sort_by_gender = defaultdict(list)
+        for key, value in gender_map.items():
+            sort_by_gender[value].append(key)
+        return sort_by_gender 
+
+
 
 
 
