@@ -471,6 +471,27 @@ class Graph:
             #we apply the cancel_request method from class User to update the users profiles and data
             userF.cancel_request(userS.user_number)       
 
+
+
+
+    #This is a function to get the number of edges in the current graph
+    def get_connections(self)->int:
+      '''
+      This is a method at the instance level, that takes no arguments and returns 
+      the number of edges in this graph
+      '''
+      return self.number_of_connections
+
+    
+
+    #This is a function to get the edges direction -components- in the graph
+    def get_connections_components(self)->list[tuple]:
+        '''
+        This is a method at the level of instance, that takes no arguments and return 
+        the edges components in the current graph
+        '''
+        return self.__connections_components  
+
     
     
 
