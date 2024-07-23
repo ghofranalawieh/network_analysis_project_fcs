@@ -525,6 +525,19 @@ class Graph:
     
 
 
+    #This is a function to get the degrees of all nodes in the graph in a dictionary
+    def get_degrees(self):
+        '''
+        This is a method at the level of instance, that takes no arguments
+        and return the degrees of nodes in a dictionary
+        '''
+        degrees = []
+        for u, v in self.__requests_list.items():
+            degrees.append((u, {'the degree is:': (len(v)+User.USER_DATA[u]["number of people requested this user"])}))
+        return degrees  
+    
+
+
 
 
 
