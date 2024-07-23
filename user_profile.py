@@ -590,6 +590,22 @@ class Graph:
         roundedm = round(percentage_males, 2)
 
         return roundedf, roundedm
+    
+
+
+    #This is a function to get the average age of the users
+    def average_age(self)->float:
+        '''
+        This methaod is at class level ,it takes no arguments,
+        it simply print out the average age of users      
+        '''
+        age_list = []
+        for u in self.__nodes_list:
+            age_list.append(User.USER_DATA[u]["age"])
+
+        average = sum(age_list)/self.__number_of_nodes
+        rounded = round(average, 2)
+        return rounded
 
 
 
