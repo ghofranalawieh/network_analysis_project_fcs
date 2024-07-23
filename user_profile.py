@@ -653,6 +653,22 @@ class Graph:
         for key, value in  age_map.items():
             age_store[value].append(key)
         return age_store 
+    
+
+
+    #This is  a function to sort the users by their experience
+    def sort_by_experience(self)->dict:
+        '''
+        This is a method at the level of instance that takes no arguments
+        and returns the experiences  as keys and users in  a list
+        '''
+        exp_map = {}
+        for u in self.__nodes_list:
+            exp_map[u]=User.USER_DATA[u]["experience"]   
+        exp_store = defaultdict(list)
+        for key, value in exp_map.items():
+            exp_store[value].append(key)
+        return exp_store 
 
 
 
