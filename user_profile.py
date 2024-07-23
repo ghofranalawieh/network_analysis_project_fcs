@@ -356,6 +356,29 @@ class Graph:
         #set the number of edges in the graph initially to 0
         self.number_of_connections =0
 
+
+        
+
+    #This is a function to add new users to the graph    
+    def add_users(self,user:User)->None:
+        '''
+        This is a method at the level of instance, it takes user of class User as an 
+        argument and store its number in the class
+        '''
+
+        #first check if the user already exists, ecause we don't want to add a user twice
+        if user.user_number not in self.__nodes_list:
+
+            #we add this user to the list of nodes
+            self.__nodes_list.append(user.user_number)
+
+            #add it as a key in the dictionary of adjacency list with an empty list as a value
+            self.__requests_list[user.user_number]=[]
+
+            #increment the number of nodes in the graph by 1
+            self.__number_of_nodes += 1
+    
+
         
 
     
