@@ -855,7 +855,21 @@ class Graph:
         d = self.sort_by_readiness() 
         for key in d.keys():
             if key == ready:
-                return d[key]                   
+                return d[key]      
+
+
+
+    #This is a function to check the users who have the given status(need)
+    def check_needys(self, needy=True)->list:
+        '''
+        This is a method at the level of instance, that takes 1 boolean 
+        argument and return a ist of users' numbers who have the same need
+        '''
+
+        d = self.sort_by_need()
+        for key in d.keys():
+            if key == needy:
+                return d[key]                     
             
 
     
