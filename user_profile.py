@@ -717,6 +717,24 @@ class Graph:
         for key, value in names_map.items():
             sort_by_name[value].append(key)
         return sort_by_name
+    
+
+    #This is a funcrtion to sort the users by their readiness to help
+    def sort_by_readiness(self)->dict:
+        '''
+        This is a method at the level of instance that takes no arguments
+        and returns their readiness to help  as keys and users in  a list
+        '''
+        readiness_map ={}
+        for u in self.__nodes_list:
+            readiness_map[u]=User.USER_DATA[u]['Ready to help']
+        readiness_sort =defaultdict(list)
+        for key, value in readiness_map.items():
+            readiness_sort[value].append(key)
+        return readiness_sort  
+
+
+
 
 
 
