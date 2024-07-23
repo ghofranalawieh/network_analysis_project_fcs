@@ -897,7 +897,21 @@ class Graph:
         d = self.sort_by_prog_lang()
         for key in d.keys():
             if key.lower() == pl.lower():
-                return d[key]          
+                return d[key]    
+
+
+
+    #This is a function to check the users who have the given gender
+    def check_gender(self, g:str)->list:
+        '''
+        This is a method at the level of instance, that takes 1 string
+        argument and return a ist of users' numbers who have the same gender
+        '''
+
+        d = self.sort_by_gender()
+        for key in d.keys():
+            if key.lower() == g.lower():
+                return d[key]              
 
     
 
