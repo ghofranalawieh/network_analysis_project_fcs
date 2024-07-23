@@ -911,7 +911,13 @@ class Graph:
         d = self.sort_by_gender()
         for key in d.keys():
             if key.lower() == g.lower():
-                return d[key]              
+                return d[key]    
+
+
+
+    #This is a function to print out all the graph data
+    def get_garph_data(self):
+        print(f"The number of users in this graph is : {self.__number_of_nodes}\nThe requests list is :{self.__requests_list}\nThe users in this class are: {self.__nodes_list}\nThe number of connections in this garph is : {self.number_of_connections}\nThe connections in this graph are:{self.__connections_components}")                  
 
     
 
