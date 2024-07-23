@@ -510,6 +510,22 @@ class Graph:
 
 
 
+    #This is a function to get the indegrees of all nodes in the graph in a dictionary
+    def get_in_degrees(self)->dict:
+        '''
+        This is a method at the level of instance, that takes no arguments
+        and it returns a dictionary 
+        '''
+        in_degrees =[]
+
+        #we iterate over the keys of adj-list dictionary and check the indegrees from the user data in the class user
+        for u in self.__nodes_list:
+            in_degrees.append((u, {'the indegrees': User.USER_DATA[u]["number of people requested this user"]}))
+        return in_degrees 
+    
+
+
+
 
 
 
