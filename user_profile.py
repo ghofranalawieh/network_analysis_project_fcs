@@ -445,7 +445,31 @@ class Graph:
             #apply the request method from class User to perform all the needed updation to the user profile and data
             userF.request(userS.user_number)        
 
-        
+
+
+
+    
+    #This is a function to remove an edge between two nodes in the graph    
+    def cancel_request(self, userF:User, userS:User)->None:
+        '''
+        This is a method at the instance level, that takes 2 users of class User as arguuents
+        and break a directed edge from userF to userS        
+        '''
+
+        #first we have to check if there is an edge between these 2 nodes directed from userF to userS
+        if userS.user_number in self.__requests_list[userF.user_number]:
+
+            #we remove userS from the value list of userF in the adj-list dictionary
+            self.__requests_list[userF.user_number].remove(userS.user_number)
+
+            #we remove the tuple of connection directed from userF to userS from the connection  matrix
+            self.__connections_components.remove((userF.user_number, userS.user_number))
+
+            #we decrement the number of edges in this graph by 1
+            self.number_of_connections -= 1
+
+            #we apply the cancel_request method from class User to update the users profiles and data
+            userF.cancel_request(userS.user_number)       
 
     
     
