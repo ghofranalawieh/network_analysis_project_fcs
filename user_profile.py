@@ -606,6 +606,20 @@ class Graph:
         average = sum(age_list)/self.__number_of_nodes
         rounded = round(average, 2)
         return rounded
+    
+
+    #This is a function to get the average experience of the users
+    def average_experience(self)->float:
+        '''
+        This methaod is at class level ,it takes no arguments,
+        it simply print out the average experience of users        
+        '''
+        experience = []
+        for u in self.__nodes_list:
+            experience.append(User.USER_DATA[u]["experience"])
+        average = sum(experience)/self.__number_of_nodes
+        rounded = round(average, 2)
+        return rounded
 
 
 
