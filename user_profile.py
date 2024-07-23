@@ -841,7 +841,21 @@ class Graph:
         d = self.sort_by_experience()
         for key in d.keys():
             if key == exp:
-                return d[key]            
+                return d[key]   
+
+
+
+    #This is a function to check the users who have the given status(readiness)
+    def check_status(self, ready=True)->list:
+        '''
+        This is a method at the level of instance, that takes 1 boolean 
+        argument and return a ist of users' numbers who have the same readiness
+        '''
+
+        d = self.sort_by_readiness() 
+        for key in d.keys():
+            if key == ready:
+                return d[key]                   
             
 
     
