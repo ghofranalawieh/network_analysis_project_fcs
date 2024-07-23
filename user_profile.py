@@ -732,6 +732,21 @@ class Graph:
         for key, value in readiness_map.items():
             readiness_sort[value].append(key)
         return readiness_sort  
+    
+
+    #This is a funcrtion to sort the users by their need for help
+    def sort_by_need(self)->dict:
+        '''
+        This is a method at the level of instance that takes no arguments
+        and returns their need for  help  as keys and users in  a list
+        '''
+        need_map = {}
+        for u in self.__nodes_list:
+            need_map[u] = User.USER_DATA[u]["In need for help"]
+        needy_sort  = defaultdict(list)
+        for key , value in need_map.items():
+            needy_sort[value].append(key)
+        return needy_sort  
 
 
 
