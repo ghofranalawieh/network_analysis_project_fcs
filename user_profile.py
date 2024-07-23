@@ -321,6 +321,41 @@ class User:
     def get_data(self):
         for user, d in  self.__data.items():
             print(user, ':' , d) 
+
+
+
+
+
+"========================================================================================================================================================================================="   
+#we are all done with the user class, now we are going to build the graph class over it 
+#in the graph class we have many features: add and remove users from the site
+#build new connections and cncel some other connections
+#sort the users and search them , in addition to many other details
+#all the statistics are done in this class
+#visualization is also in this class
+
+class Graph:
+    
+
+    #initially we set the class to take no arguments
+    def __init__(self):
+        
+        #This is the list where we are going to store the number of users
+        self.__nodes_list =[]
+           
+        #This is an adjacency list dictionary to keep track of the connections in the class
+        self.__requests_list = {} 
+
+        #set the number of users to 0 initially
+        self.__number_of_nodes =0
+        
+
+        #This is a list to store tuples of connections to use them as edges in the visualization function later
+        self.__connections_components = []
+
+        #set the number of edges in the graph initially to 0
+        self.number_of_connections =0
+
         
 
     
