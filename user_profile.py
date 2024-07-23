@@ -800,6 +800,19 @@ class Graph:
             for v in value:
                 sorting_by_pl.setdefault(v, []).append(key)
         return sorting_by_pl  
+    
+
+    #This is a function to check the users who have the given name
+    def check_user_name(self, name:str)->list:
+        '''
+        This is a method at the level of instance, that takes 1 string 
+        argument and return a ist of users' numbers who have the same name
+        '''
+        #we call the sort_by_name function to get all the names as keys and users as values 
+        sort_by_name = self.sort_by_user_name()
+        for key in sort_by_name.keys():
+            if key.lower() == name.lower():
+                return sort_by_name[key]
 
 
 
