@@ -620,6 +620,17 @@ class Graph:
         average = sum(experience)/self.__number_of_nodes
         rounded = round(average, 2)
         return rounded
+    
+
+
+    #This is a function to get the density of the graph
+    def density(self)->float:
+        '''
+        This is a method at the level of instance, that takes no arguments 
+        and it calculate th edensity of a graph
+        '''
+        d = (self.number_of_connections) /((self.__number_of_nodes) *(self.__number_of_nodes-1))
+        return d
 
 
 
