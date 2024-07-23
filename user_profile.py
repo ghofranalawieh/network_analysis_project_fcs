@@ -1,13 +1,13 @@
-#This file will be presenting the user_profile
-#The features we are going to implement are:
-#age, name, gender, prog_lang, companies, experience, ready to help
-# (The user activity. if they are ready  to help other codres or not), 
+#This file will be presenting the user_profile and the graph data and visualization
+#Initially we will be working on the user class with all the needed features for the user's profile
+#Including: user name, age, experience, companies that the user works at, gender, programming languages that the user knows
+#in addition to the user status if they are in need for other coders help or ready to help other coder in code review
+#PLus the requests from this user to other users and other requests to them 
 
 
-#in need for help(if the user is in need for other programmers help to review their code) 
-# characteristics of the user
 
-
+#we import defaultdict from collections because we are going to use it later in the graph class
+from collections import defaultdict
 
 
 class User:
@@ -15,15 +15,6 @@ class User:
     #set it initially to 0
     number_of_users = 0
 
-    #a bunch of needed lists for the sake of statistical inf
-    #about the users of the class (%, averages)
-    #And these statistics will help inprove the features of the program to tolerate the users' needs
-
-    gender_list = []
-    ready_to_help = []
-    in_need_for_help = [] 
-    age_list = []
-    experience_list = []
 
     #This is the dictionary to store the users data, where every user data is another dictionary
     #it takes the number of the user as the key
@@ -31,10 +22,16 @@ class User:
     USER_DATA = {}
 
     def __init__(self, user_name:str, age:int, companies:set, experience:int, gender:str, prog_lang:set, ready:bool, needy:bool):
-         
+       
+       #when having new user we increment the number of users by 1
+       User.number_of_users += 1  
+
+       # we do not user self.__user_number because we will be using this feature later in the other class
+       self.user_number = User.number_of_users
+
        #set the user's data
-       #we use .lower() method for data storage and comparison later
-       self.__user_name = user_name.lower()
+       #we use .lower() method for data storage and comparison later  
+       self.__user_name = user_name  
        self.__age  = age
        self.__companies = {comp.lower() for comp in companies}
        self.__experience = experience
@@ -44,8 +41,10 @@ class User:
        self.__needy = needy
 
        #These dictionaries that we want to use in order to manage user requests and followers
-       self.__requested_by = {}
-       self.__requests = {}
+       self.__requested_by =[]
+       self.__requests = []
+       self.__number_of_requests =0
+       self.__number_of_requested_by= 0
    
 
 
@@ -59,26 +58,94 @@ class User:
            'gender':self.__gender,
            'programming langs':self.__prog_lang,
            'Ready to help': self.__ready,
-           'In need for help':self.__needy
+           'In need for help':self.__needy,
+           'requested by' : self.__requested_by,
+           'requests': self.__requests,
+           'number of requests':self.__number_of_requests,
+           'number of people requested this user':self.__number_of_requested_by
        }
 
-       
-
-       #increment the number of users by 1
-       User.number_of_users += 1
-
+    
 
        #update the USER_DATA dictionary
-       User.USER_DATA[User.number_of_users]=self.__data
+       User.USER_DATA[self.user_number]=self.__data
+
+
+    #This is a function to add new requests to the user requets dictionary
+    def request(self, user:int)->None:
+        '''
+        This is a function at the level of instance, that takes one integer argument as the user number
+        and makes a request from the user to that user of this given integer       
+        '''
+        if user not in self.__requests and user!=self.user_number:
+            #first add the number of the requested user to the list of requests of the current user
+            self.__requests.append(user)
+
+            #increase the number of requests for this current user by 1
+            User.USER_DATA[self.user_number]["number of requests"] += 1
+
+            #add the current user to the requested_by list of the other user
+            User.USER_DATA[user]["requested by"].append(self.user_number)
+
+            #increment the number of people who requested the other user by 1
+            User.USER_DATA[user]["number of people requested this user"] += 1
 
 
 
-       #append the needed data to the lists 
-       User.gender_list.append(self.__gender)
-       User.ready_to_help.append(self.__ready)
-       User.in_need_for_help.append(self.__needy)
-       User.age_list.append(self.__age)
-       User.experience_list.append(self.__experience)
+
+    #This is a function to delete the request from one user to another
+    def cancel_request(self, user:int)->None:
+        '''
+        This is a method at the level of instance, that takes one integer argument as the user number
+        and cancels a request from the user to that user of this given integer       
+        '''
+
+        #fist we have to make sure that this user is in the requests list of the current user
+        if user in self.__requests:
+            #if there, all we need to do is to delete this user number from the requests list of the current user
+            self.__requests.remove(user)  
+
+            #modify the number of requests of the current user, decrease it by 1
+            User.USER_DATA[self.user_number]["number of requests"] -= 1 
+
+            #remove the current user from the requested_by list of the other user
+            User.USER_DATA[user]["requested by"].remove(self.user_number)
+
+            #decrement the number of peoplr requesting the other  user by 1
+            User.USER_DATA[user]["number of people requested this user"] -= 1
+
+
+
+
+    #This is a function to get the number of requests of a user
+    def get_number_of_requests(self)->int:
+        '''
+        This is a method at the instance level, that takes no arguments, and returns the 
+        number of requests of this user
+        '''
+        return self.__number_of_requests
+
+
+    #this is a function to get the requests dictionary of a user
+    def get_requests(self)->dict:
+        '''
+        This is a method at the level of instance, it takes no arguments, and returns the 
+        coders who this user requested
+        '''
+        
+        return self.__requests 
+
+
+
+    #This is a function to get the number of people requested this user
+    def get_requested_by(self)->dict:
+        '''
+        This is a method at the level of instance, it takes no arguments, and returns the 
+        coders who have requested this user
+        '''
+        return self.__requested_by
+   
+   
 
 
     #first getter/setter for user_name
