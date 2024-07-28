@@ -1623,6 +1623,695 @@ class Visualize:
 
         
 
+def main():
+    i = int(input("Hello to my coder world Analytic Program!\nHere you can visualize and get all sorts of needed inforamtion about your users and program\nTo start enter the number of your users: "))
+
+    menu1 =''''
+    if you want to update user's profiles or get any thing related to them type: 'user'
+    if yu want to work with graph, to add and remove edges and nodes, type : 'graph'
+    if you want to visualize any feature type: 'visualize' 
+    if you want tpo exit type : 'exit
+    ''' 
+
+
+    menu2 ='''
+    you chose user:
+
+    to get setters enter : A 
+    -to update user name : A/1
+    -to update user age : A/2
+    -to update user exp : A/3
+    -to add company : A/4
+    -to remove company : A/5
+    -to add programming language : A/6
+    -to remove programming language : A/7
+    -to update status of need : A/8
+    -to update activity (readiness to help): A/9
+
+    to get data enter : B
+    -to get user name: B/1
+    -to get user age :B/2
+    -to get user gender : B/3
+    -to get user companies: B/4
+    -to get user experience : B/5
+    -to get user status of need :B/6
+    -to get user status of readiness: B/7
+    -to get user followers : B/8
+    -to get user followings : B/9
+    -to get the user number of followings : B/10
+    -to get the users's number of followers : B/11
+    -to get all the users data : users
+    '''
+
+    menu3= '''
+    you chose graph: 
+
+    To add users to the graph: 1
+    To remove users from the graph : 2
+    To add connections between 2 users : 3
+    To remove connection between 2 users : 4
+    To get the number of edges : 5
+    To get the connections components : 6
+    To get weighted connections of users : 7
+    To check a connection between 2 users : 8
+    To find the shortest path between 2 users : 9
+    To find users who share same name: 10
+    To find users who share same age : 11
+    To find users who share same experience: 12
+    To find users who share same gender : 13
+    To find users who share same company : 14
+    To find users who share same programming language : 15
+    To find users who are ready to help : 16
+    To find users who are in need for help : 17
+    To get indegrees : 18
+    To get out degrees : 19
+    To get degrees : 20
+    To get the graph data : data
+    '''
+
+
+    menu4='''
+    you chose visualize:
+
+    To Show ages : 1
+    To show genders : 2
+    To show experience : 3
+    To show users names : 4
+    To show companies : 5
+    To show programming languages : 6
+    To show users activities : 7
+    To show users status: 8
+    To show users degrees : 9
+    To show users in degrees : 10
+    To show users out degrees : 11
+    To search uers by BFS : 12
+    To search users : 13
+    To search user name : 14
+    To search users age : 15
+    To search company = 16
+    To search an experience : 17
+    To search user programming language : 18
+    To get weighted graph ; 19
+    To get gender percentages : 20
+    To get users activities percentages: 21
+    To get iusers status percentages : 22
+    To get the density of the graph : 23
+    To show the shortest path : 24
+    To get the average age : 25
+    To get the average experiece : 26
+    To get recommendations : 27
+    '''
+
+    while i>0:
+        name =input("Enter your user name: ").strip()
+        age = int(input("Enter your user age: ").strip())
+        exp= int(input('exp: '))
+        g = input('gender : ').strip()
+        comp = input("companies separated by (,): ").split(',')
+        pl = input("prog langs separated by (,): ").split(',')
+        ready = input('enter (yes/no) if ready or not: ').strip().lower()
+        needy = input('enter (yes/no) if needy or not: ').strip().lower()
+        if ready == 'yes': act=True
+        else: act=False
+        if needy =='yes' : st = True
+        else: st= False
+        companies = set()
+        prog_lang = set()
+        for c in comp:
+            companies.add(c)
+        for l in pl:
+            prog_lang.add(l)
+
+           
+        user = User(name, age, companies, exp,g, prog_lang,act , st )
+        i -= 1
+    r = int(input('to get the data of any of your users enter the number of the user you want to check, if you do not want pass 0: '))
+    if r ==0 :
+        pass
+
+    if r:
+        print(User.USER_DATA[r])  
+    print(menu1)
+    i = input('Choose where you want to work: ').strip().lower()
+    if not i:
+        return
+    while i=='user' and i!= 'exit':
+        print(menu2)
+        choice = input('enter your choice: ')
+        if choice == 'A/1':
+            name = input('enter the new user name: ').lower()
+            user = int(input('enter the user number: '))
+            User.set_user_name(user, name)
+            r = input('if you want to get the user updated data, print(yes), else:(no):').strip().lower()
+            if r == 'yes': 
+                print(User.USER_DATA[user])
+            i = input('Choose where you want to work: ').strip().lower()    
+
+        if choice =='A/2':
+            age = int(input('enter the new age : '))
+            user =int(input('enter the number of user: '))
+            User.set_age(user, age)
+            r = input('if you want to get the user updated data, print(yes), else:(no):').strip().lower()
+            if r == 'yes': 
+                print(User.USER_DATA[user])
+            i = input('Choose where you want to work: ').strip().lower() 
+
+        if choice == 'A/3':
+            exp = int(input('enter the new experience: '))
+            user = int(input('enter the number of user: '))
+            User.set_experience(user, exp)
+            r = input('if you want to get the user updated data, print(yes), else:(no):').strip().lower()
+            if r == 'yes': 
+                print(User.USER_DATA[user])
+            i = input('Choose where you want to work: ').strip().lower()
+
+        if choice == 'A/4':
+            comp = input('enter the company you want to add: ').lower()
+            user = int(input('enter the number of user: '))
+            User.add_companies(user, comp)
+            r = input('if you want to get the user updated data, print(yes), else:(no):').strip().lower()
+            if r == 'yes': 
+                print(User.USER_DATA[user])
+            i = input('Choose where you want to work: ').strip().lower() 
+
+        if choice =='A/5':
+            comp = input('enter the name of company you want to remove: ')
+            user = int(input('enter the number of user: '))
+            User.remove_companies(user, comp)
+            r = input('if you want to get the user updated data, print(yes), else:(no):').strip().lower()
+            if r == 'yes': 
+                print(User.USER_DATA[user])
+            i = input('Choose where you want to work: ').strip().lower() 
+
+        if choice =='A/6': 
+            pl = input('enter the programming language you want to add: ').lower()
+            user = int(input('ente the number of user: '))
+            User.add_prog_lang(user, pl)
+            r = input('if you want to get the user updated data, print(yes), else:(no):').strip().lower()
+            if r == 'yes': 
+                print(User.USER_DATA[user])
+            i = input('Choose where you want to work: ').strip().lower() 
+
+        if choice == 'A/7':
+            pl = input('enter the programming language you want to remove: ').lower()
+            user = int(input('ente the number of user: '))
+            User.remove_prog_lang(user, pl)
+            r = input('if you want to get the user updated data, print(yes), else:(no):').strip().lower()
+            if r == 'yes': 
+                print(User.USER_DATA[user])
+            i = input('Choose where you want to work: ').strip().lower()
+
+
+        if choice == 'A/8':
+            need = input('enter the new status of the user(true/false): ').strip().lower()
+            user = int(input('enter the number of the user: '))
+            if need == 'true':
+                st  = True
+            else:
+                st = False
+            User.set_needy(user, st)
+            r = input('if you want to get the user updated data, print(yes), else:(no):').strip().lower()
+            if r == 'yes': 
+                print(User.USER_DATA[user])
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice =='A/9':
+            ready = input('enter the new activity of your user(true/false): ').strip().lower()
+            user = int(input('enter the number of your user: '))
+            if ready == 'true':
+                act = True
+            else:
+                act = False
+            User.set_ready(user, act)
+            r = input('if you want to get the user updated data, print(yes), else:(no):').strip().lower()
+            if r == 'yes': 
+                print(User.USER_DATA[user])
+            i = input('Choose where you want to work: ').strip().lower() 
+
+        if choice == 'B/1':
+            user = int(input('enter the nuber of your user: '))
+            print(User.get_user_name(user))
+            i = input('Choose where you want to work: ').strip().lower()
+
+        if choice == 'B/2': 
+            user = int(input('enter the nuber of your user: '))
+            print(User.get_age(user)) 
+            i = input('Choose where you want to work: ').strip().lower()
+
+        if choice == 'B/3':
+            user = int(input('enter the nuber of your user: '))
+            print(User.get_gender(user)) 
+            i = input('Choose where you want to work: ').strip().lower()
+
+        if choice == 'B/4':
+            user = int(input('enter the nuber of your user: '))
+            print(User.get_companies(user))
+            i = input('Choose where you want to work: ').strip().lower()
+
+        if choice =='B/5':
+            user = int(input('enter the nuber of your user: '))
+            print(User.get_experience(user))
+            i = input('Choose where you want to work: ').strip().lower()
+
+        if choice == 'B/6':
+            user = int(input('enter the nuber of your user: '))
+            print(User.check_if_needy(user))
+            i = input('Choose where you want to work: ').strip().lower()
+
+        if choice == 'B/7':
+            user = int(input('enter the nuber of your user: '))
+            print(User.check_if_ready(user))
+            i = input('Choose where you want to work: ').strip().lower()
+
+        if choice == 'B/8':
+            user = int(input('enter the nuber of your user: '))
+            print(User.get_requested_by(user))
+            i = input('Choose where you want to work: ').strip().lower()
+
+        if choice == 'B/9':
+            user = int(input('enter the nuber of your user: '))
+            print(User.get_requests(user)) 
+            i = input('Choose where you want to work: ').strip().lower()
+
+        if choice == 'B/10':
+            user = int(input('enter the nuber of your user: '))
+            print(User.get_number_of_requests(user))
+            i = input('Choose where you want to work: ').strip().lower()
+
+        if choice == 'B/11':
+            user = int(input('enter the nuber of your user: '))
+            print(User.get_number_of_followers(user)) 
+            i = input('Choose where you want to work: ').strip().lower() 
+
+        if choice == 'users':
+            print(User.USER_DATA)     
+
+    graph = Graph()
+    while i == 'graph' and i != 'exit' :
+        
+        print(menu3)
+        choice = int(input('enter your choice: '))
+        if choice == 1:
+            user = int(input('Enter the number of user you want to add: '))
+            graph.add_users(user)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 2:
+            user = int(input('Enter the number of user you want to remove: '))
+            graph.remove_user(user)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+        if choice == 3:
+            user1 = int(input('Enter the number of the first user in the connection: '))
+            user2 = int(input('Enter the number of the second user in the connection: '))
+            graph.add_connection(user1, user2)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 4:
+            user1 = int(input('Enter the number of the first user in the connection: '))
+            user2 = int(input('Enter the number of the second user in the connection: '))
+            graph.cancel_request(user1, user2)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+        if choice == 5:
+            print(f"the number of edges in your graph is : {graph.number_of_connections}")
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 6:
+            print(f"The connections components in your graph are as follows: {graph.get_connections_components()}")
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 7:
+            print(f"The connections with their weights in your graph are as follows: {graph.get_weighted_connections()}")
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+        if choice == 8:
+            user1 = int(input('Enter the number of the first user in the connection: '))
+            user2 = int(input('Enter the number of the second user in the connection: '))
+            print(graph.check_connection(user1, user2))
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower()
+
+
+        if choice == 9:
+            user1 = int(input('Enter the number of the first user in the connection: '))
+            user2 = int(input('Enter the number of the second user in the connection: '))
+            print(f"the shortest path and distance between these 2 users is : {Dijkstra(graph, user1, user2)}")
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower()
+
+
+        if choice == 10:
+            print(f"The users of your graph sorted by their names : {graph.sort_by_user_name()}")
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower()
+
+
+        if choice == 11:
+            print(f"The users of your graph sorted by their ages : {graph.sort_by_age()}")
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower()
+
+
+        if choice == 12:
+            print(f"The users of your graph sorted by their experience : {graph.sort_by_experience()}")
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 13:
+            print(f"The users of your graph sorted by their genders : {graph.sort_by_gender()}")
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 14:
+            print(f"The users of your graph sorted by their companies : {graph.sort_by_companies()}")
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower()  
+
+
+
+        if choice == 15:
+            print(f"The users of your graph sorted by their programming languages : {graph.sort_by_prog_lang()}")
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 16:
+            print(f"The users of your graph sorted by their readiness to help : {graph.sort_by_readiness()}")
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 17:
+            print(f"The users of your graph sorted by their need for help : {graph.sort_by_need()}")
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower()
+
+
+        if choice == 18:
+            print(f"The users of your graph sorted by their indegrees : {graph.get_in_degrees()}")
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower()
+
+
+        if choice == 19:
+            print(f"The users of your graph sorted by their out degrees : {graph.get_out_degrees()}")
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower()  
+
+        if choice == 20:
+            print(f"The users of your graph sorted by their degrees: {graph.get_degrees()}")
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower()   
+
+
+
+    G = Visualize()
+    while i == 'visualize' and i!= 'exit':
+        print(menu4)
+        choice = int(input("Enter your choice: "))
+        if choice == 1:
+            i = input('Choose where you want to work: ').strip().lower()
+            G.by_age('users sorted by ages', graph)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            
+
+
+        if choice == 2: 
+            G.by_gender('users sorted by their gender', graph)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+        if choice == 3:
+            G.by_experience('users sorted by experiences', graph)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 4:
+            G.by_user_name('users sorted by user name', graph)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower()
+
+
+        if choice == 5:
+            G.by_companies('users sorted by their companies', graph)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 6:
+            G.by_pl('users sorted by their programming languages', graph)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+        if choice == 7:
+            G.by_readiness('users sorted by their activity, colored ones are active', graph)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+        if  choice == 8:
+            G.by_need('users sorted by their need, colored ones are in need', graph)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+
+        if choice == 9:
+            G.by_degree('The bigger node the highest degree', graph)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 10:
+            G.by_out_degrees('The bigger the node the higher out degree it has', graph)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 11:
+            G.by_in_degrees("The bigger the node the higher in degree it has", graph)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 12:
+            start = int(input('enter the starting user for BFS: '))
+            target = int(input('enter the targeted user by BFS; '))
+            G.search_user_BFS('search a user by BFS', graph,start, target )
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 13:
+            users0 = input('enter your users separated by commas: ')
+            users1 = users0.split(',')
+            users = [int(user) for user in users1.split(',')] 
+            G.search_user('search a user or list of users', graph, users)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+   
+    
+        if choice == 14:
+            name = input('enter the name you are lokking for: ').strip().lower()
+            G.search_user_name('the users with the searched user name', graph, name)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 15:
+            age = int(input('enter the age you are looking for: '))
+            G.search_user_age('the users of the search age', graph, age)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower()
+
+        if choice == 16:
+            comp = input('enter the company you are looking for: ').strip().lower()
+            G.search_user_company('the users of the companies you are looking for', graph, comp)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 17:
+            exp = int(input('enter the experience you are looking for: '))
+            G.search_user_experience('the users of the experience you are looking for', graph, exp)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+        if choice == 18:
+            pl = input('enter the programming language you are looking for: ').strip().lower()
+            G.search_user_prog_lang('users of the searched programming language', graph, pl)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower()
+
+        if choice == 19:
+            G.get_weighted('the weighted graph', graph)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 20:
+            G.get_gender_percentage('The gender percentages', graph)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+        if choice == 21:
+            G.get_users_activity('the uers activity', graph)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+        
+
+        if choice == 22:
+            G.get_users_status('The users status', graph)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+        if choice == 23:
+            G.get_graph_density('The graph density', graph)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+        if choice == 24:
+            u1 = int(input('enter the first user: '))
+            u2 = int(input('enter the second user: '))
+            G.shortest_path('The shortest path',graph, u1, u2)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 25:
+            G.average_age('The average age of users', graph)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+                
+           
+
+
+        if choice == 26:
+            G.average_experience('The average experience of the users', graph)
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+
+
+        if choice == 27:
+            u = int(input('enter the user you want to get recommendation for: '))
+            G.get_recommendation('the recommended users', graph, u) 
+            r = input('if you want to get the graph data print(yes) else (no): ').strip().lower()
+            if r == 'yes':
+                print(graph.get_garph_data())
+            i = input('Choose where you want to work: ').strip().lower() 
+   
+main()    
+    
+    
+     
 
 
          
