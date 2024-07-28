@@ -71,21 +71,21 @@ class User:
        User.USER_DATA[self.user_number]=self.__data
 
 
-    #This is a function to add new requests to the user requets dictionary
-    def request(self, user:int)->None:
+  #This is a function to add new requests to the user requets dictionary
+    def request(user1:int, user:int)->None:
         '''
         This is a function at the level of instance, that takes one integer argument as the user number
         and makes a request from the user to that user of this given integer       
         '''
-        if user not in self.__requests and user!=self.user_number:
+        if user not in User.USER_DATA[user1]["requests"] and user!=user1:
             #first add the number of the requested user to the list of requests of the current user
-            self.__requests.append(user)
+            User.USER_DATA[user1]["requests"].append(user)
 
             #increase the number of requests for this current user by 1
-            User.USER_DATA[self.user_number]["number of requests"] += 1
+            User.USER_DATA[user1]["number of requests"] += 1
 
             #add the current user to the requested_by list of the other user
-            User.USER_DATA[user]["requested by"].append(self.user_number)
+            User.USER_DATA[user]["requested by"].append(user1)
 
             #increment the number of people who requested the other user by 1
             User.USER_DATA[user]["number of people requested this user"] += 1
@@ -94,228 +94,239 @@ class User:
 
 
     #This is a function to delete the request from one user to another
-    def cancel_request(self, user:int)->None:
+    def cancel_request(user1:int, user:int)->None:
         '''
         This is a method at the level of instance, that takes one integer argument as the user number
         and cancels a request from the user to that user of this given integer       
         '''
 
         #fist we have to make sure that this user is in the requests list of the current user
-        if user in self.__requests:
+        if user in User.USER_DATA[user1]["requests"]:
             #if there, all we need to do is to delete this user number from the requests list of the current user
-            self.__requests.remove(user)  
+            User.USER_DATA[user1]["requests"].remove(user)  
 
             #modify the number of requests of the current user, decrease it by 1
-            User.USER_DATA[self.user_number]["number of requests"] -= 1 
+            User.USER_DATA[user1]["number of requests"] -= 1 
 
             #remove the current user from the requested_by list of the other user
-            User.USER_DATA[user]["requested by"].remove(self.user_number)
+            User.USER_DATA[user]["requested by"].remove(user1)
 
-            #decrement the number of peoplr requesting the other  user by 1
+            #decrement the number of people requesting the other  user by 1
             User.USER_DATA[user]["number of people requested this user"] -= 1
 
 
 
 
     #This is a function to get the number of requests of a user
-    def get_number_of_requests(self)->int:
+    def get_number_of_requests(user: int)->int:
         '''
         This is a method at the instance level, that takes no arguments, and returns the 
         number of requests of this user
         '''
-        return self.__number_of_requests
+        return User.USER_DATA[user]["number of requests"]
 
 
-    #this is a function to get the requests dictionary of a user
-    def get_requests(self)->dict:
+    #this is a function to get the requests list of a user
+    def get_requests(user: int)->list:
         '''
         This is a method at the level of instance, it takes no arguments, and returns the 
         coders who this user requested
         '''
         
-        return self.__requests 
+        return User.USER_DATA[user]['requests']
 
 
 
-    #This is a function to get the number of people requested this user
-    def get_requested_by(self)->dict:
+    #This is a function to get the people requested this user
+    def get_requested_by(user: int)->list:
         '''
         This is a method at the level of instance, it takes no arguments, and returns the 
         coders who have requested this user
         '''
-        return self.__requested_by
-   
-   
+        return User.USER_DATA[user]['requested by']
+
+
+    #This is a function to get the number of users requested this user
+    def get_number_of_followers(user:int)->int:
+        '''
+        This is a method at the level of instance, it takes no arguments 
+        it returns the number of users reequested the instance user
+        ''' 
+        return User.USER_DATA[user]["number of people requested this user"]
+
+
 
 
     #first getter/setter for user_name
-    def get_user_name(self)->str:
+    def get_user_name(user:int)->str:
         '''
         This method is instance level
         it takes no arguments, and simply print the name of the user                 
         '''   
-        return self.__user_name
+        return User.USER_DATA[user]["user name"]
 
 
-    def set_user_name(self, name:str):
+    def set_user_name(user:int, name:str):
         '''
         This method is at instance level 
         it takes one string input a the new name and update the user_name to it     
         '''    
-        User.USER_DATA[self.user_number]["user name"]= name.lower()
+        User.USER_DATA[user]["user name"]= name.lower()
 
 
     
     
     #These are methods to get and set the age
-    def get_age(self)->int:
+    def get_age(user:int)->int:
         '''
         This method is at instance level, it takes no 
         arguments and simply print the age of the user
         '''  
-        return self.__age
+        return User.USER_DATA[user]["age"]
 
 
-    def set_age(self, new_age:int):
+    def set_age(user: int, new_age:int):
         '''
         This method is at instance level, it takes one argument, 
         as the new age to reset it in the profile
         '''
-        User.USER_DATA[self.user_number]["age"]= new_age
+        User.USER_DATA[user]["age"]= new_age
 
         
 
 
     #This is a method to get  the gender of the user 
-    def get_gender(self)->str:
+    def get_gender(user:int)->str:
         '''
         This method is at instance level, it takes no arguments
         but simply print the user gender
         '''   
-        return  self.__gender
+        return  User.USER_DATA[user]["gender"]
 
 
 
 
     #These are methods to set/get experience of the user
-    def get_experience(self)->int:
+    def get_experience(user:int)->int:
         '''
         This method is at instance level, it takes no arguments
         and simply print the experience years of the user
         '''
-        return self.__experience
+        return User.USER_DATA[user]["experience"]
 
 
 
-    def set_experience(self, years:int)->None:
+    def set_experience(user:int, years:int)->None:
         '''
         This method is at instance level it takes one integer argument, 
         as the new experience of the user
         '''   
-        User.USER_DATA[self.user_number]["experience"] = years
+        User.USER_DATA[user]["experience"] = years
        
 
 
 
-    #These methods to get/add/remove companies from user profile
-    def get_companies(self)->set:
+     #These methods to get/add/remove companies from user profile
+    def get_companies(user:int)->set:
         '''
         This is a method at instance level , it takes no arguments
         it simply print the companies that the user works at
         '''   
-        return self.__companies
+        return User.USER_DATA[user]["companies"]
 
 
-    def add_companies(self, comp:str)->None:
+    def add_companies(user:int, comp:str)->None:
        '''
        This is a method at instance level, it takes one string argument
        as the new company and adds it to the set of companies
        that the user works at
        '''
-       if comp.lower() not in self.__companies:
-           self.__companies.add(comp.lower())
+       if comp.lower() not in User.USER_DATA[user]["companies"]:
+           User.USER_DATA[user]["companies"].add(comp.lower())
 
-    def remove_companies(self, comp:str)->None:
+    def remove_companies(user:int, comp:str)->None:
         '''
         This is a method at instance level, it takes one string argument
        as the  company to be removed from  the set of companies
        that the user works at       
         '''
-        if comp.lower() in self.__companies:
-            self.__companies.remove(comp.lower())
+        if comp.lower() in User.USER_DATA[user]["companies"]:
+            User.USER_DATA[user]["companies"].remove(comp.lower())
 
 
 
 
 
     #These methods are to get/add/remove programming languages from the user profile
-    def get_prog_lang(self)->set:
+    def get_prog_lang(user: int)->set:
         '''
         This method is at instance level, it takes no arguments
         it simply print the programming languages that the user knows
         '''               
-        return self.__prog_lang
+        return User.USER_DATA[user]["programming langs"]
 
-    def add_prog_lang(self, pl:str)->None:
+    def add_prog_lang(user:int, pl:str)->None:
         '''
         This method is at instance level, it takes one string argument
         as the new programming language to add to the set of 
         programming languages of the user      
         '''    
-        if pl.lower() not in self.__prog_lang:
-            self.__prog_lang.add(pl.lower())
+        if pl.lower() not in User.USER_DATA[user]["programming langs"]:
+            User.USER_DATA[user]["programming langs"].add(pl.lower())
 
-    def remove_prog_lang(self, pl:str)->None:
+    def remove_prog_lang(user: int, pl:str)->None:
         '''
         This method is at instance level, it takes one string argument
         as the  programming language to be removed from the set of 
         programming languages of the user        
         ''' 
 
-        if pl.lower() in self.__prog_lang:
-            self.__prog_lang.remove(pl.lower())
+        if pl.lower() in User.USER_DATA[user]["programming langs"]:
+            User.USER_DATA[user]["programming langs"].remove(pl.lower())
 
 
 
 
     #These are get/set functions for ready to help part in the user profile
-    def check_if_ready(self)->bool:
+    def check_if_ready(user:int)->bool:
         '''
         This method is at instance level, it takes no arguments
         and simply print a phrase telling if the user is ready to 
         help other coder or not       
         '''               
-        return self.__ready
+        return User.USER_DATA[user]["Ready to help"]
           
     
-    def set_ready(self, ready:bool)->None:
+    def set_ready(user: int, ready:bool)->None:
         '''
         This method is at instance level, it takes one argument
         that  is the new boolean value for the status   
         '''
-        User.USER_DATA[self.user_number]["Ready to help"] = ready
+        User.USER_DATA[user]["Ready to help"] = ready
         
 
 
 
     #These are get/set functions for in need for help part in the user profile
-    def check_if_needy(self)->bool:
+    def check_if_needy(user:int)->bool:
         '''
         This method is at instance level, it takes no arguments
         and simply print a phrase telling if the user is in need for
         other coders' help  or not  
         '''    
-        return self.__needy
+        return User.USER_DATA[user]["In need for help"]
         
     
 
-    def set_needy(self, needy:bool)->None:
+    def set_needy(user:int, needy:bool)->None:
         '''
         This method is at instance level, it takes one argument
         that is the new boolean value for the status 
         '''
-        User.USER_DATA[self.user_number]["In need for help"] = needy
+        User.USER_DATA[user]["In need for help"] = needy
 
+
+        
 
     #This is a method to get the entire data of the user
     def get_data(self):
