@@ -344,7 +344,6 @@ class User:
 #sort the users and search them , in addition to many other details
 #all the statistics are done in this class
 #visualization is also in this class
-
 class Graph:
     
 
@@ -352,7 +351,7 @@ class Graph:
     def __init__(self):
         
         #This is the list where we are going to store the number of users
-        self.__nodes_list =[]
+        self.nodes_list =[]
            
         #This is an adjacency list dictionary to keep track of the connections in the class
         self.__requests_list = {} 
@@ -361,52 +360,49 @@ class Graph:
         self.__number_of_nodes =0
         
 
-        #This is a list to store tuples of connections to use them as edges in the visualization function later
+        #This is a list to store tuples of connections to use them as edges in the visualization class later
         self.__connections_components = []
 
         #set the number of edges in the graph initially to 0
         self.number_of_connections =0
 
 
-
-
     #This is a function to add new users to the graph    
-    def add_users(self,user:User)->None:
+    def add_users(self,user:int)->None:
         '''
         This is a method at the level of instance, it takes user of class User as an 
         argument and store its number in the class
         '''
 
-        #first check if the user already exists, ecause we don't want to add a user twice
-        if user.user_number not in self.__nodes_list:
+        #first check if the user already exists, because we don't want to add a user twice
+        if user not in self.nodes_list:
 
             #we add this user to the list of nodes
-            self.__nodes_list.append(user.user_number)
+            self.nodes_list.append(user)
 
             #add it as a key in the dictionary of adjacency list with an empty list as a value
-            self.__requests_list[user.user_number]=[]
+            self.__requests_list[user]=[]
 
             #increment the number of nodes in the graph by 1
             self.__number_of_nodes += 1
     
+    
 
-
-
-     #This is a function to remove a user from the graph
-    def remove_user(self, user:User)->None:
+    #This is a function to remove a user from the graph
+    def remove_user(self, user:int)->None:
         '''
         This is a methad at the level of instance, it takes user of class User as an argument
         and delete its data from the graph        
         '''
         
         #first check if this user exists in the users list of the graph
-        if user.user_number in self.__nodes_list:
+        if user in self.nodes_list:
 
             #if exists remove it from the list of users
-            self.__nodes_list.remove(user.user_number)
+            self.nodes_list.remove(user)
 
             #and delete its key, value pair from the adjacency list dictionary
-            del self.__requests_list[user.user_number]
+            del self.__requests_list[user]
 
             #decrement the number of nodes of this graph by 1
             self.__number_of_nodes -= 1
@@ -414,75 +410,71 @@ class Graph:
 
             #remove this node from other lists of the other nodes in the adjacency list dictionary if exists
             for  v in self.__requests_list.values():
-                if user.user_number in v:
-                    v.remove(user.user_number)
+                if user in v:
+                    v.remove(user)
 
             #we also need to remove all the connections with it from the connections matrix
             # we set the number of deleting times to 0 initially to decrement it from the total number of connections in the graph        
             number_of_delete =0
             connections_to_remove = []        
             for a, b in self.__connections_components:
-                if a==user.user_number or b==user.user_number:
+                if a==user or b==user:
                    connections_to_remove.append((a,b))
             
             for connection in connections_to_remove:
                 self.__connections_components.remove(connection)
                 number_of_delete += 1
-            self.number_of_connections -= number_of_delete
-            
+            self.number_of_connections -= number_of_delete        
+        
 
 
-
-
+        
     #This is a function to add an edge between 2 nodes in the graph  
-    def add_connection(self, userF:User, userS:User)->None:
+    def add_connection(self, userF:int, userS:int)->None:
         '''
         This is a method at the instance level, that takes 2 users of class User as arguuents
         and build a directed edge from userF to userS
         '''
 
         #first we have to check if there are any connection from userF to userS
-        if userS.user_number not in self.__requests_list[userF.user_number]:
+        if  userS in self.nodes_list and userF in self.nodes_list and userS not in self.__requests_list[userF] and userF != userS:
 
             #we add userS to the value list in the adj-list dictionary
-            self.__requests_list[userF.user_number].append(userS.user_number)
+            self.__requests_list[userF].append(userS)
 
             #we append a tuple of the new connected pairs to the connections matrix
-            self.__connections_components.append((userF.user_number, userS.user_number))
+            self.__connections_components.append((userF, userS))
 
             #increment the number of connections by 1
             self.number_of_connections += 1
 
             #apply the request method from class User to perform all the needed updation to the user profile and data
-            userF.request(userS.user_number)        
-
-
-
+            User.request(userF, userS)
 
     
+
     #This is a function to remove an edge between two nodes in the graph    
-    def cancel_request(self, userF:User, userS:User)->None:
+    def cancel_request(self, userF:int, userS:int)->None:
         '''
         This is a method at the instance level, that takes 2 users of class User as arguuents
         and break a directed edge from userF to userS        
         '''
 
         #first we have to check if there is an edge between these 2 nodes directed from userF to userS
-        if userS.user_number in self.__requests_list[userF.user_number]:
+        if userS in self.nodes_list and userF in self.nodes_list and  userS in self.__requests_list[userF]:
 
             #we remove userS from the value list of userF in the adj-list dictionary
-            self.__requests_list[userF.user_number].remove(userS.user_number)
+            self.__requests_list[userF].remove(userS)
 
             #we remove the tuple of connection directed from userF to userS from the connection  matrix
-            self.__connections_components.remove((userF.user_number, userS.user_number))
+            self.__connections_components.remove((userF, userS))
 
             #we decrement the number of edges in this graph by 1
             self.number_of_connections -= 1
 
             #we apply the cancel_request method from class User to update the users profiles and data
-            userF.cancel_request(userS.user_number)       
-
-
+            User.cancel_request(userF, userS)        
+      
 
 
     #This is a function to get the number of edges in the current graph
@@ -501,8 +493,210 @@ class Graph:
         This is a method at the level of instance, that takes no arguments and return 
         the edges components in the current graph
         '''
-        return self.__connections_components  
+        return self.__connections_components   
     
+
+    
+    def check_connection(self, userF:int, userS:int):
+        if userF in self.nodes_list and userS in self.nodes_list:
+            res = []
+            for connection in self.get_connections_components():
+                a, b = connection
+               
+                if (a==userF and b==userS):
+                    res.append(True)
+                res.append(False)
+            if True in res: return True
+            else: return False        
+            
+
+    def get_weight(self, userF:int, userS:int):
+        weight = 0
+        for connection in self.__connections_components:           
+            a, b = connection
+            if (userF == a) and (userS==b):
+                c= User.USER_DATA[a]
+                d = User.USER_DATA[b]
+
+                if c['user name'] == d['user name']:
+                   weight += 1
+                if c['gender']==d['gender']:
+                    weight += 1
+                if c['age'] == d['age']:
+                    weight += 1
+                if c['experience']== d['experience']:
+                    weight += 1
+                if c['In need for help'] == d["Ready to help"]:
+                    weight += 1
+                for company in c["companies"] :
+                    if company in d["companies"]:
+                        weight += 1
+                for pl in c["programming langs"]:
+                    if pl in d["programming langs"]:
+                        weight += 1 
+                     
+        return weight       
+
+                         
+
+
+    def neighbors_weights_dict(self)->dict:
+        res = {}
+        for k, vl in self.__requests_list.items():
+            if vl:
+               res[k] = {v:(self.get_weight(k, v)) for v in vl}
+        return res    
+    
+           
+
+
+
+    def get_weighted_connections(self)->list:
+        
+        lst = []
+        for connection in self.__connections_components:
+           
+            weight = 0
+            
+            a, b = connection
+            c= User.USER_DATA[a]
+            d = User.USER_DATA[b]
+
+            if c['user name'] == d['user name']:
+                weight += 1
+            if c['gender']==d['gender']:
+                weight += 1
+            if c['age'] == d['age']:
+                weight += 1
+            if c['experience']== d['experience']:
+                weight += 1
+            if c['In need for help'] == d["Ready to help"]:
+                weight += 1
+            for company in c["companies"] :
+                if company in d["companies"]:
+                    weight += 1
+            for pl in c["programming langs"]:
+                if pl in d["programming langs"]:
+                    weight += 1           
+                   
+                
+
+        
+            lst.append((a, b, weight))
+        return lst   
+    
+
+    def get_recommendation(self, user:int)->list:
+        res =[]
+       
+
+        a  =user
+        for u in self.nodes_list:
+            if u!= a:
+                weight =0
+                d1 = User.USER_DATA[a]
+                d2 = User.USER_DATA[u]
+                if d1['user name'] == d2['user name']:
+                    weight += 1
+                if d1['gender']==d2['gender']:
+                    weight += 1
+                if d1['age'] == d2['age']:
+                    weight += 1
+                if d1['experience']== d2['experience']:
+                    weight += 1
+                if d1['In need for help'] == d2["Ready to help"]:
+                    weight += 1
+                for company in d1["companies"] :
+                    if company in d2["companies"]:
+                       weight += 1
+                for pl in d1["programming langs"]:
+                    if pl in d2["programming langs"]:
+                       weight += 1  
+                if weight >= 4:
+                    res.append(u)
+        return res                         
+
+
+    
+
+    def get_connections_by_names(self):
+        lst = []
+        for connection in self.get_connections_components():
+            a, b = connection
+            
+            a = User.USER_DATA[a]["user name"]+'('+str(a)+')'
+            b = User.USER_DATA[b]["user name"]+'('+str(b)+')'
+            lst.append((a, b))
+        return lst    
+    
+
+    def get_connections_by_companies(self):
+        lst = []
+        for connection in self.get_connections_components():
+            a, b = connection
+            a = str(User.USER_DATA[a]['companies'])+str(a)
+            b = str(User.USER_DATA[b]['companies'])+str(b)
+            lst.append((a, b))
+        return lst  
+
+    def get_connections_by_pl(self):
+        lst = []
+        for connection in self.get_connections_components():
+            a, b = connection
+            a = str(User.USER_DATA[a]['programming langs'])+str(a)
+            b = str(User.USER_DATA[b]["programming langs"])+str(b)
+            lst.append((a, b)) 
+        return lst    
+
+    def get_connections_by_exp(self):
+        lst = []
+        for connection in self.get_connections_components():
+            a, b = connection
+            a = str(a)+':'+str(User.USER_DATA[a]["experience"])
+            b = str(b)+':'+str(User.USER_DATA[b]["experience"])
+            lst.append((a, b)) 
+        return lst  
+        
+    def get_components_by_age(self):
+        lst = []
+        for connection in self.get_connections_components():
+            a, b = connection
+            a = str(a)+':'+str(User.USER_DATA[a]["age"])
+            b = str(b)+':'+str(User.USER_DATA[b]["age"])
+            lst.append((a, b)) 
+        return lst  
+    
+    def get_components_by_degree(self):
+        lst = []
+        for connection in self.get_connections_components():
+            a, b = connection
+            a = str(a)+':'+str(User.USER_DATA[a]["number of requests"]+User.USER_DATA[a]["number of people requested this user"])
+            b = str(b)+':'+str(User.USER_DATA[b]["number of requests"]+User.USER_DATA[b]["number of people requested this user"])
+            lst.append((a, b)) 
+        return lst 
+
+    def get_components_by_indegrees(self):
+        lst = []
+        for connection in self.get_connections_components():
+            a, b = connection
+            a = str(a)+':'+str(User.USER_DATA[a]["number of people requested this user"])
+            b = str(b)+':'+str(User.USER_DATA[b]["number of people requested this user"])
+            lst.append((a, b)) 
+        return lst 
+    
+    def get_components_by_outdegrees(self):
+        lst = []
+        for connection in self.get_connections_components():
+            a, b = connection
+            a = str(a)+':'+str(User.USER_DATA[a]["number of requests"])
+            b = str(b)+':'+str(User.USER_DATA[b]["number of requests"])
+            lst.append((a, b)) 
+        return lst 
+
+
+
+
+
 
 
     #This is a function to get the outdegrees of all nodes in the graph in a dictionary    
@@ -516,8 +710,7 @@ class Graph:
         #we iterate through keys, and values of the adj-list dictionary
         for u, v in self.__requests_list.items():
             out_degrees.append((u, {f"The outdegree":len(v)}))
-        return out_degrees 
-    
+        return out_degrees   
 
 
 
@@ -530,9 +723,9 @@ class Graph:
         in_degrees =[]
 
         #we iterate over the keys of adj-list dictionary and check the indegrees from the user data in the class user
-        for u in self.__nodes_list:
+        for u in self.nodes_list:
             in_degrees.append((u, {'the indegrees': User.USER_DATA[u]["number of people requested this user"]}))
-        return in_degrees 
+        return in_degrees  
     
 
 
@@ -544,9 +737,10 @@ class Graph:
         '''
         degrees = []
         for u, v in self.__requests_list.items():
-            degrees.append((u, {'the degree is:': (len(v)+User.USER_DATA[u]["number of people requested this user"])}))
+            degrees.append((u, {'degree:': (len(v)+User.USER_DATA[u]["number of people requested this user"])}))
         return degrees  
     
+
 
     #This is a function to get the percentage of ppl who are ready to help
     def helpful_percentage(self)->float:
@@ -555,14 +749,16 @@ class Graph:
         it simply prints out the percentage of coders who are welling to help     
         '''  
         summ = 0
-        for u in self.__nodes_list:
+        for u in self.nodes_list:
             if User.USER_DATA[u]['Ready to help']==True:
                 summ += 1
                 
         percentage = ((summ/self.__number_of_nodes)*100)
         rounded = round(percentage, 2)
-        return rounded   
-    
+        unhelpful = round((100 - rounded), 2)
+        return [rounded, unhelpful]  
+
+
 
 
     #This is  a function to get the percentage of people who are in need for help
@@ -573,17 +769,20 @@ class Graph:
         other coders help          
         '''
         summ = 0
-        for u in self.__nodes_list:
+        for u in self.nodes_list:
             if User.USER_DATA[u]["In need for help"]==True:
                 summ+= 1
 
 
         percentage = ((summ/self.__number_of_nodes)*100)
         rounded = round(percentage, 2)
-        return rounded
+        not_needy = round((100 - rounded), 2)
+        return [rounded, not_needy]
+
+
+
+
     
-
-
     #This is a function to get the percentage of users sorted by gender
     def gender_percentage(self)->float:
         '''
@@ -591,7 +790,7 @@ class Graph:
         percentsge of users' genders in the program        
         '''         
         sumf = 0
-        for  u in self.__nodes_list:
+        for  u in self.nodes_list:
             if User.USER_DATA[u]["gender"]=='female':
                 sumf += 1
 
@@ -600,24 +799,31 @@ class Graph:
         percentage_males = 100 - percentage_females
         roundedm = round(percentage_males, 2)
 
-        return roundedf, roundedm
+        return [roundedf, roundedm]
     
 
 
-    #This is a function to get the average age of the users
+     #This is a function to get the average age of the users
     def average_age(self)->float:
         '''
         This methaod is at class level ,it takes no arguments,
         it simply print out the average age of users      
         '''
         age_list = []
-        for u in self.__nodes_list:
+        for u in self.nodes_list:
             age_list.append(User.USER_DATA[u]["age"])
 
         average = sum(age_list)/self.__number_of_nodes
         rounded = round(average, 2)
         return rounded
-    
+
+
+
+
+
+
+
+
 
     #This is a function to get the average experience of the users
     def average_experience(self)->float:
@@ -626,12 +832,12 @@ class Graph:
         it simply print out the average experience of users        
         '''
         experience = []
-        for u in self.__nodes_list:
+        for u in self.nodes_list:
             experience.append(User.USER_DATA[u]["experience"])
         average = sum(experience)/self.__number_of_nodes
         rounded = round(average, 2)
         return rounded
-    
+
 
 
     #This is a function to get the density of the graph
@@ -640,10 +846,10 @@ class Graph:
         This is a method at the level of instance, that takes no arguments 
         and it calculate th edensity of a graph
         '''
-        d = (self.number_of_connections) /((self.__number_of_nodes) *(self.__number_of_nodes-1))
-        return d
+        d = round((self.number_of_connections) /((self.__number_of_nodes) *(self.__number_of_nodes-1)), 3)
+        return [d]
     
-
+    
 
     #This is a function to sort the users by their age
     def sort_by_age(self)->dict:
@@ -654,7 +860,7 @@ class Graph:
 
         #first store teh user number as a key and the age as a value
         age_map = {}
-        for u in self.__nodes_list:
+        for u in self.nodes_list:
             age_map[u]=User.USER_DATA[u]["age"]
 
         #we use defaultdict inorder  to ensure that certain keys always have a default value -list-, even if they haven't been explicitly set yet.   
@@ -664,8 +870,8 @@ class Graph:
         for key, value in  age_map.items():
             age_store[value].append(key)
         return age_store 
-    
 
+    
 
     #This is  a function to sort the users by their experience
     def sort_by_experience(self)->dict:
@@ -674,13 +880,14 @@ class Graph:
         and returns the experiences  as keys and users in  a list
         '''
         exp_map = {}
-        for u in self.__nodes_list:
+        for u in self.nodes_list:
             exp_map[u]=User.USER_DATA[u]["experience"]   
         exp_store = defaultdict(list)
         for key, value in exp_map.items():
             exp_store[value].append(key)
-        return exp_store 
+        return exp_store       
     
+
 
 
     #This is a funcrtion to sort the users by their followers
@@ -690,13 +897,14 @@ class Graph:
         and returns the number of followers  as keys and users in  a list
         '''
         requested_by_map = {}
-        for u in self.__nodes_list:
+        for u in self.nodes_list:
             requested_by_map[u]=User.USER_DATA[u]["number of people requested this user"]
         followers_nbr_store = defaultdict(list)
         for key , value in requested_by_map.items():
             followers_nbr_store[value].append(key)
         return followers_nbr_store  
     
+
 
 
     #this is a funcrtion to sort the users by their followings
@@ -706,14 +914,14 @@ class Graph:
         and returns the number of followings  as keys and users in  a list
         '''
         request_map ={}
-        for u in self.__nodes_list:
+        for u in self.nodes_list:
             request_map[u]=User.USER_DATA[u]["number of requests"]   
         following_nbr = defaultdict(list)
         for key, value in request_map.items():
             following_nbr[value].append(key)      
-        return following_nbr
+        return following_nbr 
+         
     
-
 
     #This is a funcrtion to sort the users by their user names
     def sort_by_user_name(self)->dict:
@@ -722,13 +930,14 @@ class Graph:
         and returns their names  as keys and users in  a list
         '''
         names_map = {}
-        for u in self.__nodes_list:
+        for u in self.nodes_list:
             names_map[u] = User.USER_DATA[u]["user name"]
         sort_by_name = defaultdict(list)
         for key, value in names_map.items():
             sort_by_name[value].append(key)
         return sort_by_name
     
+
 
     #This is a funcrtion to sort the users by their readiness to help
     def sort_by_readiness(self)->dict:
@@ -737,13 +946,14 @@ class Graph:
         and returns their readiness to help  as keys and users in  a list
         '''
         readiness_map ={}
-        for u in self.__nodes_list:
+        for u in self.nodes_list:
             readiness_map[u]=User.USER_DATA[u]['Ready to help']
         readiness_sort =defaultdict(list)
         for key, value in readiness_map.items():
             readiness_sort[value].append(key)
-        return readiness_sort  
+        return readiness_sort       
     
+
 
     #This is a funcrtion to sort the users by their need for help
     def sort_by_need(self)->dict:
@@ -752,13 +962,14 @@ class Graph:
         and returns their need for  help  as keys and users in  a list
         '''
         need_map = {}
-        for u in self.__nodes_list:
+        for u in self.nodes_list:
             need_map[u] = User.USER_DATA[u]["In need for help"]
         needy_sort  = defaultdict(list)
         for key , value in need_map.items():
             needy_sort[value].append(key)
         return needy_sort  
-    
+        
+
 
     #This is a funcrtion to sort the users by the companies they work for
     def sort_by_companies(self)->dict:
@@ -767,15 +978,14 @@ class Graph:
         and returns the companies that they work at as keys and users in  a list
         '''
         companies_map ={}
-        for u in self.__nodes_list:
+        for u in self.nodes_list:
             companies_map[u]=User.USER_DATA[u]["companies"]
         companies_sort = {}
         for key, value in companies_map.items():
             for v in value:
                 #here we use setdefault method to set default values to the keys even before defining them
                 companies_sort.setdefault(v, []).append(key)
-        return companies_sort 
-
+        return companies_sort  
 
 
 
@@ -787,16 +997,16 @@ class Graph:
         '''
 
         gender_map = {}
-        for u in self.__nodes_list:
+        for u in self.nodes_list:
             gender_map[u]=User.USER_DATA[u]["gender"]
         sort_by_gender = defaultdict(list)
         for key, value in gender_map.items():
             sort_by_gender[value].append(key)
         return sort_by_gender 
-    
+              
 
 
-    
+
     #This is a funcrtion to sort the users by their programming languages
     def sort_by_prog_lang(self)->dict:
         '''
@@ -804,7 +1014,7 @@ class Graph:
         and returns their programming languages as keys and users in  a list
         '''
         prog_lang_map ={}
-        for u in self.__nodes_list:
+        for u in self.nodes_list:
             prog_lang_map[u]=User.USER_DATA[u]["programming langs"]
         sorting_by_pl = {}
         for key, value in prog_lang_map.items():
@@ -812,9 +1022,9 @@ class Graph:
                 sorting_by_pl.setdefault(v, []).append(key)
         return sorting_by_pl  
     
+    
 
-
-    #This is a function to check the users who have the given name
+   #This is a function to check the users who have the given name
     def check_user_name(self, name:str)->list:
         '''
         This is a method at the level of instance, that takes 1 string 
@@ -826,7 +1036,7 @@ class Graph:
             if key.lower() == name.lower():
                 return sort_by_name[key]
 
-
+         
 
     #This is a function to check the users who have the given age     
     def check_age(self, age:int)->list:
@@ -838,9 +1048,9 @@ class Graph:
         d =self.sort_by_age()
         for key in d.keys():
             if key == age:
-                return d[key]    
-
-
+                return d[key]
+            
+           
 
     #This is a function to check the users who have the given experience
     def check_experience(self, exp:int)->list:
@@ -852,8 +1062,7 @@ class Graph:
         d = self.sort_by_experience()
         for key in d.keys():
             if key == exp:
-                return d[key]   
-
+                return d[key]
 
 
     #This is a function to check the users who have the given status(readiness)
@@ -866,8 +1075,8 @@ class Graph:
         d = self.sort_by_readiness() 
         for key in d.keys():
             if key == ready:
-                return d[key]      
-
+                return d[key]                      
+    
 
 
     #This is a function to check the users who have the given status(need)
@@ -880,10 +1089,8 @@ class Graph:
         d = self.sort_by_need()
         for key in d.keys():
             if key == needy:
-                return d[key]  
-
-
-
+                return d[key]
+            
 
     #This is a function to check the users who work at the given company
     def check_company(self, comp:str)->list:
@@ -894,9 +1101,9 @@ class Graph:
         d = self.sort_by_companies()
         for key in d.keys():
             if key.lower()==comp.lower():
-                return d[key]                            
+                return d[key] 
 
-
+            
 
     #This is a function to check the users who have the given programming language
     def check_prog_lang(self, pl:str)->list:
@@ -908,7 +1115,7 @@ class Graph:
         d = self.sort_by_prog_lang()
         for key in d.keys():
             if key.lower() == pl.lower():
-                return d[key]    
+                return d[key]   
 
 
 
@@ -922,44 +1129,4 @@ class Graph:
         d = self.sort_by_gender()
         for key in d.keys():
             if key.lower() == g.lower():
-                return d[key]    
-
-
-
-    #This is a function to print out all the graph data
-    def get_garph_data(self):
-        print(f"The number of users in this graph is : {self.__number_of_nodes}\nThe requests list is :{self.__requests_list}\nThe users in this class are: {self.__nodes_list}\nThe number of connections in this garph is : {self.number_of_connections}\nThe connections in this graph are:{self.__connections_components}")                  
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-    
-
-
-    
-
-
+                return d[key]
