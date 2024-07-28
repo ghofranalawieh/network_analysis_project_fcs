@@ -1195,4 +1195,434 @@ def BFS(graph, start_node, target, visited):
                 q.append(node)
     return [target]
 
+
+class Visualize:
+    
+    def by_age(self, title, graph:Graph):
+        self.title= title 
+        G = nx.DiGraph()
+        age = [str(u)+':'+str(User.USER_DATA[u]["age"]) for u in graph.nodes_list]
+        G.add_nodes_from(age)
+        G.add_edges_from(graph.get_components_by_age())
+        seed = 42
+        lay_out = nx.spring_layout(G, seed)
+        self.age = {user : User.USER_DATA[user]["age"] for user in graph.nodes_list}
+        nodes_sizes = [3+ 10*self.age[user] for user in graph.nodes_list]   
+        plt.figure()
+        plt.title(title) 
+        nx.draw(G,with_labels =True,pos = lay_out, node_size = nodes_sizes, node_color = 'pink', font_color = 'indigo', width = 1, font_size=4 )
+       
+        plt.show() 
+
+
+
+    def by_gender(self, title, graph:Graph):    
+        self.title = title
+        G = nx.DiGraph()
+        self.lst =[]
+        self.colors =[]
+        G.add_nodes_from(graph.nodes_list)
+        G.add_edges_from(graph.get_connections_components())
+        seed = 42
+        lay_out = nx.spring_layout(G, seed)
+        for u in graph.nodes_list:
+            self.lst.append((u, {'gender':User.USER_DATA[u]['gender']}))
+
+        color_map = {'female':'pink', 'male':'lightblue'}  
+
+        self.colors = [color_map[node_data["gender"]] for _, node_data in self.lst]
+        plt.figure()
+        plt.title(title) 
+        nx.draw(G, with_labels=True,pos = lay_out, node_color = self.colors, node_size=500, width = 1, font_size= 6, font_color = 'indigo')
+        plt.show()
+
+
+    def by_experience(self, title, graph:Graph):
+        self.title= title 
+        G = nx.DiGraph()
+        exp = [str(u)+':'+str(User.USER_DATA[u]["experience"]) for u in graph.nodes_list]
+        G.add_nodes_from(exp)
+        G.add_edges_from(graph.get_connections_by_exp())
+        seed = 42
+        lay_out = nx.spring_layout(G, seed)
+        self.exp = {user : User.USER_DATA[user]["experience"] for user in graph.nodes_list}
+        nodes_sizes = [100+ 10*self.exp[user] for user in graph.nodes_list] 
+        plt.figure()
+        plt.title(title) 
+        nx.draw(G,with_labels =True,pos = lay_out, node_size = nodes_sizes, node_color = 'pink', font_color = 'indigo', width = 1, font_size=4 )
+        
+        plt.show()
+    
+
+
+    def by_user_name(self, title, graph:Graph):
+        self.title = title
+        G = nx.DiGraph()
+        names = [User.USER_DATA[u]["user name"]+'('+str(u)+')' for u in graph.nodes_list]
+        G.add_nodes_from(names)
+        G.add_edges_from(graph.get_connections_by_names())
+        layout = nx.spring_layout(G, 42)
+
+        plt.figure()
+        plt.title(title)
+        nx.draw(G, with_labels= True, pos = layout, node_color = 'lightblue', node_size = 500, font_size = 4, font_color = 'indigo', width = 1)
+       
+        plt.show()
+
+
+    def by_companies(self, title, graph:Graph): 
+        self.title = title
+        G = nx.DiGraph()
+        companies = [str(User.USER_DATA[u]['companies'])+str(u) for u in graph.nodes_list]
+        G.add_nodes_from(companies)
+        edges = [(u, v) for (u, v) in graph.get_connections_by_companies() if u != v]
+        G.add_edges_from(edges)
+        ''' G .add_edges_from(graph.get_connections_by_companies())'''
+        layout = nx.spring_layout(G, 42)
+        plt.figure()
+        plt.title(title)
+        nx.draw(G, with_labels = True, pos = layout, node_size = 500, node_color = 'lightgreen', font_size = 6, font_color = 'indigo', width = 1 )   
+        
+        plt.show()
+
+
+    def by_pl(self, title, graph:Graph):
+        self.title = title
+        G = nx.DiGraph()
+        pl = [str(User.USER_DATA[u]["programming langs"])+str(u) for u in graph.nodes_list] 
+        G.add_nodes_from(pl)
+        G.add_edges_from(graph.get_connections_by_pl())
+        layout = nx.spring_layout(G, 42)
+        plt.figure()
+        plt.title(title)
+        nx.draw(G, pos = layout, with_labels = True, node_size = 500, node_color = 'pink', font_size = 4, font_color = 'indigo', width = 1)
+        
+        plt.show()  
+
+    def by_readiness(self, title, graph:Graph):
+        self.title = title
+        G = nx.DiGraph()
+        
+        self.colors =[]
+        G.add_nodes_from(graph.nodes_list)
+        G.add_edges_from(graph.get_connections_components())
+        layout = nx.spring_layout(G, 42)
+        self.lst = [(u,{'readiness': User.USER_DATA[u]['Ready to help']}) for u in graph.nodes_list]
+        color_map = {True: 'lightgreen', False:'grey'}
+        self.colors = [color_map[node_data['readiness']] for _, node_data in self.lst]
+        plt.figure()
+        plt.title(title)
+        nx.draw(G, pos=layout, with_labels=True, node_size=500, node_color=self.colors, font_size = 8, font_color ="white", width = 1)
+        
+        plt.show()
+
+    def by_need(self, title, graph:Graph): 
+        self.title = title
+        G = nx.DiGraph()
+        
+        self.colors =[]
+        G.add_nodes_from(graph.nodes_list)
+        G.add_edges_from(graph.get_connections_components())
+        layout = nx.spring_layout(G, 42)
+        self.lst = [(u,{'need': User.USER_DATA[u]['In need for help']}) for u in graph.nodes_list]
+        color_map = {True: 'yellow', False:'grey'}
+        self.colors = [color_map[node_data['need']] for _, node_data in self.lst]
+        plt.figure()
+        plt.title(title)
+        nx.draw(G, pos=layout, with_labels=True, node_size=500, node_color=self.colors, font_size = 8, font_color ="black", width = 1)
+        
+        plt.show()
+    
+
+    def by_degree(self, title, graph:Graph):
+        self.title= title 
+        G = nx.DiGraph()
+        degree= [str(u)+':'+str(User.USER_DATA[u]["number of requests"]+User.USER_DATA[u]["number of people requested this user"]) for u in graph.nodes_list]
+        G.add_nodes_from(degree)
+        G.add_edges_from(graph.get_components_by_degree())
+        seed = 42
+        lay_out = nx.spring_layout(G, seed)
+        self.deg = {user : User.USER_DATA[user]['number of requests']+User.USER_DATA[user]["number of people requested this user"] for user in graph.nodes_list}
+        nodes_sizes = [50+ 200*self.deg[user] for user in graph.nodes_list] 
+        plt.figure()
+        plt.title(title) 
+        nx.draw(G,with_labels =True,pos = lay_out, node_size = nodes_sizes, node_color = 'orange', font_color = 'indigo', width = 1, font_size=4 )
+        
+        plt.show()
+
+
+    def by_in_degrees(self, title, graph:Graph):   
+        self.title= title 
+        G = nx.DiGraph()
+        indegree= [str(u)+':'+str(User.USER_DATA[u]["number of people requested this user"]) for u in graph.nodes_list]
+        G.add_nodes_from(indegree)
+        G.add_edges_from(graph.get_components_by_indegrees())
+        seed = 42
+        lay_out = nx.spring_layout(G, seed)
+        self.ind = {user : User.USER_DATA[user]["number of people requested this user"] for user in graph.nodes_list}
+        nodes_sizes = [50+ 100*self.ind[user] for user in graph.nodes_list] 
+        plt.figure()
+        plt.title(title) 
+        nx.draw(G,with_labels =True,pos = lay_out, node_size = nodes_sizes, node_color = 'lightgreen', font_color = 'black', width = 1, font_size=4 )
+        
+        plt.show() 
+
+    def by_out_degrees(self, title, graph:Graph):
+        self.title= title 
+        G = nx.DiGraph()
+        outdegree= [str(u)+':'+str(User.USER_DATA[u]["number of requests"]) for u in graph.nodes_list]
+        G.add_nodes_from(outdegree)
+        G.add_edges_from(graph.get_components_by_outdegrees())
+        seed = 42
+        lay_out = nx.spring_layout(G, seed)
+        self.outd = {user : User.USER_DATA[user]["number of requests"] for user in graph.nodes_list}
+        nodes_sizes = [50+ 100*self.outd[user] for user in graph.nodes_list] 
+        plt.figure()
+        plt.title(title) 
+        nx.draw(G,with_labels =True,pos = lay_out, node_size = nodes_sizes, node_color = 'pink', font_color = 'black', width = 1, font_size=4 )
+        
+        plt.show() 
+
+
+
+    def search_user_BFS(self, title, graph:Graph,start,  target):
+        G = nx.DiGraph()
+        G.add_nodes_from(graph.nodes_list)
+        G.add_edges_from(graph.get_connections_components())
+        pos = nx.spring_layout(G, 42)
+        plt.figure()
+        plt.title(title)
+        
+        order = BFS(G,start,  target, set())
+        for i, node in enumerate(order, start=1):
+            plt.clf()
+            plt.title(title)
+            nx.draw(G, pos=pos, node_size= 100, node_color=['yellow' if n==node else 'grey' for n in G.nodes], with_labels= True, width = 0.5)
+            plt.draw()
+            plt.pause(1.5)
+        plt.show()
+        time.sleep(1.5)  
+
+
+
+
+    def search_user(self, title, graph:Graph, target:list[int]):
+        G = nx.DiGraph()
+        G.add_nodes_from(graph.nodes_list)
+        G.add_edges_from(graph.get_connections_components())
+        pos = nx.spring_layout(G, 42)
+        plt.figure()
+        plt.title(title)
+        color_map = {node: 'yellow' if node in target else 'grey' for node in G.nodes}
+        colors = [color_map[node] for node in G.nodes]     
+        nx.draw(G, pos = pos, with_labels = True, node_size = 100, node_color = colors)
+        plt.show()
+
+
+    def search_user_name(self, title, graph:Graph, target:str):
+        G = nx.DiGraph()
+        G.add_nodes_from(graph.nodes_list)
+        G.add_edges_from(graph.get_connections_components())
+        if  graph.check_user_name(target):
+            order = graph.check_user_name(target)
+        else:
+            order = []    
+        plt.figure()
+        plt.title(title)
+        pos = nx.spring_layout(G, 42)
+        color_map = {node :'yellow' if node in order else 'grey' for node in G.nodes}
+        colors = [color_map[node] for node in G.nodes]
+        nx.draw(G, pos = pos, with_labels = True, node_color = colors, node_size = 200, width = 0.5)
+        plt.show()
+
+
+    def search_user_age(self, title, graph:Graph, target:int):
+        G = nx.DiGraph()
+        G.add_nodes_from(graph.nodes_list)
+        G.add_edges_from(graph.get_connections_components())
+        if  graph.check_age(target):
+            order = graph.check_age(target)
+        else:
+            order = []    
+        plt.figure()
+        plt.title(title)
+        pos = nx.spring_layout(G, 42)
+        color_map = {node :'yellow' if node in order else 'grey' for node in G.nodes}
+        colors = [color_map[node] for node in G.nodes]
+        nx.draw(G, pos = pos, with_labels = True, node_color = colors, node_size = 200, width = 0.5)
+        plt.show()
+    
+
+
+    def search_user_company(self, title, graph:Graph, target:str):
+        G = nx.DiGraph()
+        G.add_nodes_from(graph.nodes_list)
+        G.add_edges_from(graph.get_connections_components())
+        if  graph.check_company(target):
+            order = graph.check_company(target)
+        else:
+            order = []    
+        plt.figure()
+        plt.title(title)
+        pos = nx.spring_layout(G, 42)
+        color_map = {node :'yellow' if node in order else 'grey' for node in G.nodes}
+        colors = [color_map[node] for node in G.nodes]
+        nx.draw(G, pos = pos, with_labels = True, node_color = colors, node_size = 200, width = 0.5)
+        plt.show()
+
+
+    def search_user_experience(self, title, graph:Graph, target:int):
+        G = nx.DiGraph()
+        G.add_nodes_from(graph.nodes_list)
+        G.add_edges_from(graph.get_connections_components())
+        if  graph.check_experience(target):
+            order = graph.check_experience(target)
+        else:
+            order = []    
+        plt.figure()
+        plt.title(title)
+        pos = nx.spring_layout(G, 42)
+        color_map = {node :'yellow' if node in order else 'grey' for node in G.nodes}
+        colors = [color_map[node] for node in G.nodes]
+        nx.draw(G, pos = pos, with_labels = True, node_color = colors, node_size = 200, width = 0.5)
+        plt.show()
+    
+
+
+    def search_user_prog_lang(self, title, graph:Graph, target:str):
+        G = nx.DiGraph()
+        G.add_nodes_from(graph.nodes_list)
+        G.add_edges_from(graph.get_connections_components())
+        if  graph.check_prog_lang(target):
+            order = graph.check_prog_lang(target)
+        else:
+            order = []    
+        plt.figure()
+        plt.title(title)
+        pos = nx.spring_layout(G, 42)
+        color_map = {node :'yellow' if node in order else 'grey' for node in G.nodes}
+        colors = [color_map[node] for node in G.nodes]
+        nx.draw(G, pos = pos, with_labels = True, node_color = colors, node_size = 200, width = 0.5)
+        plt.show()
+
+
+
+    def get_weighted(self, title, graph:Graph):
+        G = nx.DiGraph()
+        G.add_nodes_from(graph.nodes_list)  
+        
+        G.add_edges_from(graph.get_connections_components())
+        edges = graph.get_weighted_connections()
+        weights =  np.array([edge[2] for edge in edges] )
+        norm = plt.Normalize(weights.min(), weights.max())
+        cmap = cm.coolwarm
+        edge_colors = [cmap(norm(weight)) for weight in weights]
+    
+        
+        plt.figure(figsize=(3, 4))
+        pos = nx.spring_layout(G, 42)
+        nx.draw(G, pos = pos, with_labels = True, node_color = 'red', node_size = 60, width = 1, edge_color = edge_colors , font_size = 3, font_color = 'white', font_weight ='bold')
+        sm = plt.cm.ScalarMappable(cmap = cmap, norm = norm)
+        ax = plt.gca()
+        ax.set_axis_off()
+        plt.colorbar(sm, ax = ax)
+        plt.title(title)
+        plt.show()
+
+
+    def get_gender_percentage(self, title, graph:Graph):
+        genders = ['females', 'males']
+        percentages = graph.gender_percentage()
+        plot = plt.bar(x = genders, height = percentages, color =('pink', 'lightblue'), ec ='lightgray')
+        plt.bar_label(plot, labels = percentages, label_type = 'edge', padding = 3)
+        plt.ylim([0, 100])
+        plt.title(title)
+        plt.xlabel('gender')
+        plt.ylabel('percentage')
+        plt.show()
+
+    def get_users_activity(self, title, graph:Graph):
+        status = ['Ready to help', 'Not Ready to help']
+        percentage = graph.helpful_percentage()
+        plot = plt.bar(x = status, height = percentage, color =('yellow', 'grey'), ec ='black')
+        plt.bar_label(plot, labels = percentage, label_type = 'edge', padding = 3)
+        plt.ylim([0, 100])
+        plt.title(title)
+        plt.xlabel('user\'s activity')
+        plt.ylabel('percentage')
+        plt.show()
+
+    def get_users_status(self, title, graph:Graph):
+        status = ['In need', 'Not in need']
+        percentage = graph.needy_percentage()
+        plot = plt.bar(x = status, height = percentage, color =('yellow', 'grey'), ec ='black')
+        plt.bar_label(plot, labels = percentage, label_type = 'edge', padding = 3)
+        plt.ylim([0, 100])
+        plt.title(title)
+        plt.xlabel('user\'s status')
+        plt.ylabel('percentage')
+        plt.show()
+    
+
+    def get_graph_density(self, title, graph:Graph):
+        status = ['density']
+        percentage = graph.density()
+        plot = plt.bar(x = status, height = percentage, color =('yellow'), ec ='black')
+        plt.bar_label(plot, labels = percentage, label_type = 'edge', padding = 3)
+        plt.ylim([0, 1])
+        plt.title(title)
+        plt.xlabel('graph')
+        plt.ylabel('density')
+        plt.show()
+
+
+    def shortest_path(self, title, graph:Graph, start:int, target:int):
+        s = start
+        t = target
+        path = Dijkstra(graph, s, t )
+        self.search_user(title, graph, path[0])
+
+    
+
+    def average_age(self, title, graph:Graph):
+        users = graph.nodes_list
+        ages = [User.USER_DATA[u]["age"] for u in users]
+        av = graph.average_age()
+        plt.figure(figsize = (10, 6))
+       
+        plt.scatter(users, ages, color = 'blue', linestyle ='--', alpha = 0.6, zorder = 1)
+        plt.axhline(y=av, color = 'red', linestyle = '-', label = f"average({av})", zorder = 0)
+        plt.xlabel('users')
+        plt.ylabel('ages')
+        plt.title(title)
+        plt.legend()
+        plt.show()
+
+    def average_experience(self, title, graph:Graph):
+        users = graph.nodes_list
+        experiences = [User.USER_DATA[u]["experience"] for u in users]
+        av = graph.average_experience()
+        plt.figure(figsize = (8, 6))
+       
+        plt.scatter(users, experiences, color = 'blue', linestyle ='--', alpha = 0.6, zorder = 1)
+        plt.axhline(y=av, color = 'red', linestyle = '-', label = f"average({av})", zorder = 0)
+        plt.xlabel('users')
+        plt.ylabel('experiences')
+        plt.title(title)
+        plt.legend()
+        plt.show()
+
+
+    def get_recommendation(self, title, graph:Graph, user:int):
+        recommended = graph.get_recommendation(user)
+        self.search_user(title, graph, recommended)
+
+
+
+
+
+        
+
+
+
          
