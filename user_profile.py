@@ -329,8 +329,8 @@ class User:
         
 
     #This is a method to get the entire data of the user
-    def get_data(self):
-        for user, d in  self.__data.items():
+    def get_data(user:int):
+        for user, d in  User.USER_DATA[user].items():
             print(user, ':' , d) 
 
 
@@ -1130,3 +1130,69 @@ class Graph:
         for key in d.keys():
             if key.lower() == g.lower():
                 return d[key]
+
+     #This is a function to print out all the graph data
+    def get_garph_data(self):
+        print(f"The number of users in this graph is : {self.__number_of_nodes}\nThe requests list is :{self.__requests_list}\nThe users in this class are: {self.nodes_list}\nThe number of connections in this garph is : {self.number_of_connections}\nThe connections in this graph are:{self.__connections_components}")
+
+        
+            
+
+
+
+
+
+   #This is a new class to visualize the graphs and the statistical studies of the network
+import networkx as nx
+import matplotlib.pyplot as plt
+import numpy as np
+import time
+import matplotlib.cm as cm
+import matplotlib.colors as mcolors
+from heapq import heapify, heappop, heappush
+import sys
+
+
+
+def Dijkstra( graph:Graph, start, target):
+    g= graph.neighbors_weights_dict()
+    inf = sys.maxsize
+    node_data = {n:{'cost':inf, 'pred':[]} for n in graph.nodes_list}
+    node_data[start]['cost']= 0
+    min_heap = []
+    heappush(min_heap, (0, start))
+    visited = set()
+    while min_heap:
+        current_cost, temp = heappop(min_heap)
+
+        if temp not in visited:
+            visited.add(temp)
+            for j in g.get(temp, {}):
+                if j not in visited:
+                    cost  = node_data[temp]['cost'] + g[temp][j]
+                    if cost <  node_data[j]['cost']:
+                        node_data[j]['cost'] = cost 
+                        node_data[j]['pred'] = node_data[temp]['pred']+ [temp]
+                        heappush(min_heap, (cost, j))
+
+    return (node_data[target]['pred']  + [target] , node_data[target]['cost'])   
+
+
+def BFS(graph, start_node, target, visited):
+    visited= set([start_node])
+    q = [start_node]
+    order = []
+
+    while q:
+        vertex = q.pop(0)
+        order.append(vertex)
+        if vertex ==target:
+            return order
+
+        for node in graph[vertex]:
+            if node not in visited:
+                visited.add(node)
+                q.append(node)
+    return [target]
+
+         
